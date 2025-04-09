@@ -1,0 +1,58 @@
+/* General styles for the container */
+.d-lg-flex.half {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  /* Left side: Form */
+  .card-body {
+    order: 1; /* Place the form on the left */
+    flex: 1;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #ffffff; /* White background for the form */
+  }
+  
+  /* Right side: Background image */
+  .bg {
+    order: 2; /* Place the image on the right */
+    flex: 1;
+    background-position: center;
+  }
+  
+  /* Form styles */
+  form {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  form .form-group {
+    margin-bottom: 20px;
+  }
+  
+  form .btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  form .btn:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .d-lg-flex.half {
+      flex-direction: column; /* Stack the form and image vertically on smaller screens */
+    }
+  
+    .bg {
+      height: 300px; /* Adjust the height of the image for smaller screens */
+    }
+  }

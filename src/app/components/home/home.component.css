@@ -1,0 +1,66 @@
+.red-icon {
+    color: #bb0404;
+  }
+  .best-places-area {
+      padding: 50px 0;
+      background-color: #f9f9f9;
+    }
+    
+    .section-title h3 {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .section-title p {
+      font-size: 1rem;
+      color: #666;
+      margin-top: 10px;
+    }
+    
+    .single-place {
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .single-place:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    }
+    
+    .single-place .thumb img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    
+    .single-place .place-info {
+      padding: 15px;
+      text-align: center;
+    }
+    
+    .single-place .place-info h4 {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #a30000;
+      margin-bottom: 10px;
+    }
+    
+    .single-place .place-info p {
+      font-size: 0.9rem;
+      color: #666;
+    }
+    
+    .stars {
+      margin-top: 10px;
+    }
+    
+    .stars i {
+      color: #FFD700; /* Gold color for stars */
+      font-size: 1rem;
+      margin-right: 2px;
+    } 

@@ -1,0 +1,69 @@
+<div class="places-container">
+  <h2>Gestion des Places</h2>
+
+  <!-- Ajouter une nouvelle place -->
+  <div class="form-group">
+    <!-- Nom -->
+    <input [(ngModel)]="newPlace.name" placeholder="Nom de la place" class="form-control" />
+
+    <!-- Catégorie -->
+    <input [(ngModel)]="newPlace.category" placeholder="Catégorie" class="form-control mt-2" />
+
+    <!-- Description -->
+    <textarea [(ngModel)]="newPlace.description" placeholder="Description" class="form-control mt-2"></textarea>
+
+    <!-- Adresse -->
+    <input [(ngModel)]="newPlace.address" placeholder="Adresse" class="form-control mt-2" />
+
+    <!-- Latitude et Longitude -->
+    <input [(ngModel)]="newPlace.latitude" type="number" placeholder="Latitude" class="form-control mt-2" />
+    <input [(ngModel)]="newPlace.longitude" type="number" placeholder="Longitude" class="form-control mt-2" />
+
+    <!-- Numéro de téléphone -->
+    <input [(ngModel)]="newPlace.phoneNumber" placeholder="Numéro de téléphone" class="form-control mt-2" />
+
+    <!-- Horaires d'ouverture -->
+    <h5 class="mt-3">Horaires d'ouverture</h5>
+    <input [(ngModel)]="newPlace.openingHours['Lundi']" placeholder="Lundi" class="form-control mt-2" />
+    <input [(ngModel)]="newPlace.openingHours['Mardi']" placeholder="Mardi" class="form-control mt-2" />
+    <input [(ngModel)]="newPlace.openingHours['Mercredi']" placeholder="Mercredi" class="form-control mt-2" />
+
+    <!-- Tags -->
+    <label for="tags" class="mt-3">Tags :</label>
+    <select id="tags" [(ngModel)]="newPlace.tags" multiple class="form-control mt-2">
+      <option *ngFor="let tag of tags" [value]="tag.libelle">{{ tag.libelle }}</option>
+    </select>
+
+    <!-- Images -->
+    <label for="images" class="mt-3">Images :</label>
+    <input [(ngModel)]="newPlace.images" placeholder="Lien des images (séparés par des virgules)" class="form-control mt-2" />
+
+    <!-- Bouton Ajouter -->
+    <button (click)="addPlace()" class="btn btn-primary mt-3">Ajouter</button>
+  </div>
+
+  <!-- Liste des places -->
+  <table class="table table-striped mt-4">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Nom</th>
+        <th>Catégorie</th>
+        <th>Tags</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let place of places; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ place.name }}</td>
+        <td>{{ place.category }}</td>
+        <td>{{ place.tags.join(', ') }}</td>
+        <td>
+          <button (click)="editPlaceDetails(place)" class="btn btn-warning btn-sm">Modifier</button>
+          <button (click)="deletePlace(place.id)" class="btn btn-danger btn-sm">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

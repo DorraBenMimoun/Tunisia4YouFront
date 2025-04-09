@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+  </head>
+  <body>
+    <div class="d-lg-flex half">
+      <!-- Left side with background image -->
+      <div class="bg order-1 order-md-2" style="background-image: url('../../../assets/login/images/bg4.jpg'); width: 100px;"></div>
+      
+      <!-- Right side with card -->
+      <div class="card-body">
+        <p class="text-center mb-4">Discover and share the best places in Tunisia!</p>
+    
+        <form (ngSubmit)="register()" #registerForm="ngForm">
+          <!-- Username -->
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter your Username"
+              id="username"
+              name="username"
+              [(ngModel)]="username"
+              required
+            />
+          </div>
+    
+          <!-- Email (facultatif si pas utilisé en back) -->
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input
+              type="email"
+              class="form-control"
+              placeholder="your-email@gmail.com"
+              id="email"
+              name="email"
+              [(ngModel)]="email"
+            />
+          </div>
+    
+          <!-- Password -->
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              placeholder="Enter your password"
+              id="password"
+              name="password"
+              [(ngModel)]="password"
+              required
+            />
+          </div>
+    
+          <!-- Confirm Password -->
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              class="form-control"
+              placeholder="Confirm your password"
+              id="confirmPassword"
+              name="confirmPassword"
+              [(ngModel)]="confirmPassword"
+              required
+            />
+          </div>
+    
+          <!-- Terms and Conditions -->
+       
+    
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-block btn-primary" [disabled]="!registerForm.form.valid">
+            Sign Up
+          </button>
+        </form>
+      </div>
+    </div>
+    <script>
+      // JavaScript validation for the form
+      document.getElementById("registerForm").addEventListener("submit", function(event) {
+        let valid = true;
+        
+        const username = document.getElementById("username");
+        const password = document.getElementById("password");
+        const confirmPassword = document.getElementById("confirmPassword");
+        const usernameError = document.getElementById("usernameError");
+        const passwordError = document.getElementById("passwordError");
+        
+        usernameError.textContent = "";
+        passwordError.textContent = "";
+        
+        if (!username.value.includes("@")) {
+          usernameError.textContent = "Please enter a valid email address.";
+          valid = false;
+        }
+        
+        if (password.value.length < 6) {
+          passwordError.textContent = "Password must be at least 6 characters long.";
+          valid = false;
+        }
+        
+        if (password.value !== confirmPassword.value) {
+          passwordError.textContent = "Passwords do not match.";
+          valid = false;
+        }
+        
+        if (!valid) {
+          event.preventDefault();
+        }
+      });
+    </script>    
+    
+
+
+  </body>
+</html>
