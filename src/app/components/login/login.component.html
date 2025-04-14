@@ -1,78 +1,47 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../../assets/login/css/bootstrap.min.css">
-    <title>Login</title>
- 
-  </head>
-  <body>
-    <div class="d-lg-flex half">
-      <!-- Left side with background image -->
-      <div class="bg order-1 order-md-2" style="background-image: url('../../../assets/login/images/bg3.jpg'); width: 600px;"></div>
-      
-      <!-- Right side with title and card -->
-      <div class="contents order-2 order-md-1 d-flex flex-column align-items-center justify-content-center">
-        <!-- Title -->
-        <h1 class="page-title">Login to <strong>Tunisia4You</strong></h1>
-        <p class="text-center mb-4">Discover and share the best places in Tunisia!</p>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login - Tunisia4You</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="login-container">
+    <!-- Left side image -->
+    <div class="login-image"></div>
 
-        <!-- Card -->
-        <div class="card w-75">
-          <div class="card-body">
-            <form (ngSubmit)="login()" action="#" method="post">
-              <div class="form-group">
-                <label for="username">Username</label>
-                <input [(ngModel)]="username" name="username" placeholder="Username" />
-                <span class="error" id="usernameError"></span>
-              </div>
-              <br>
-              <div class="form-group">
-                <label for="password">Password</label>
-                <input [(ngModel)]="password" name="password" type="password" placeholder="Password" />
-                <span class="error" id="passwordError"></span>
-              </div>
-              <div class="d-flex mb-4 align-items-center">
-                <label class="control control--checkbox mb-0">
-                  <span class="caption">Remember me</span>
-                  <input type="checkbox" checked="checked"/>
-                </label>
-                <span class="ml-auto"><a href="#" class="forgot-pass">Forgot Password</a></span>
-              </div>
-              <button type="submit">Login</button>
-            </form>
-          </div>
+    <!-- Right side form -->
+    <div class="login-form-container">
+      <h1 class="login-title">Welcome to <strong>Tunisia4You</strong></h1>
+      <p class="login-subtitle">Discover and share the best places in Tunisia!</p>
+
+      <form (ngSubmit)="login()" #loginForm="ngForm" novalidate>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" [(ngModel)]="username" placeholder="Enter your username" required />
         </div>
-      </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" [(ngModel)]="password" placeholder="Enter your password" required />
+        </div>
+
+        <div class="form-options">
+          <label class="remember-me">
+            <input type="checkbox" checked />
+            <span>Remember me</span>
+          </label>
+          <a href="/forget" class="forgot-password">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="btn-login" [disabled]="!loginForm.form.valid">Login</button>
+
+        <div class="signup-redirect">
+          Don’t have an account? <a href="/signup">Sign up</a>
+        </div>
+      </form>
     </div>
-    <script>
-      document.getElementById("loginForm").addEventListener("submit", function(event) {
-        let valid = true;
-        
-        const username = document.getElementById("username");
-        const password = document.getElementById("password");
-        const usernameError = document.getElementById("usernameError");
-        const passwordError = document.getElementById("passwordError");
-        
-        usernameError.textContent = "";
-        passwordError.textContent = "";
-        
-        if (!username.value.includes("@")) {
-          usernameError.textContent = "Please enter a valid email address.";
-          valid = false;
-        }
-        
-        if (password.value.length < 6) {
-          passwordError.textContent = "Password must be at least 6 characters long.";
-          valid = false;
-        }
-        
-        if (!valid) {
-          event.preventDefault();
-        }
-      });
-    </script>
-  </body>
+  </div>
+</body>
 </html>

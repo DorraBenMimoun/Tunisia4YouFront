@@ -1,1 +1,79 @@
-<p>profile works!</p>
+<div class="container">
+    <!-- Left side with image -->
+    <div class="image-side"></div>
+  
+    <!-- Right side with form -->
+    <div class="form-side">
+      <h2 class="title">Your Profile</h2>
+      <p class="subtitle">Manage your account information</p>
+  
+      <!-- Form to update username/email -->
+      <form (ngSubmit)="onSave()" #profileForm="ngForm" novalidate>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" [(ngModel)]="userData.username" required />
+        </div>
+  
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" [(ngModel)]="userData.email" required />
+        </div>
+  
+        <button type="submit" class="btn-submit" [disabled]="!profileForm.form.valid">
+          Update Profile
+        </button>
+      </form>
+  
+      <!-- Divider -->
+      <hr style="margin: 30px 0; border: none; border-top: 1px solid #eee;" />
+  
+      <!-- Form to update password -->
+      <form (ngSubmit)="onSave()" #passwordForm="ngForm" novalidate>
+        <h3 class="section-title">Change Password</h3>
+  
+        <div class="form-group">
+          <label for="currentPassword">Current Password</label>
+          <input type="password" id="currentPassword" name="currentPassword" [(ngModel)]="userData.currentPassword" required />
+        </div>
+  
+        <div class="form-group">
+          <label for="newPassword">New Password</label>
+          <input type="password" id="newPassword" name="newPassword" [(ngModel)]="userData.newPassword" required />
+        </div>
+  
+        <button type="submit" class="btn-submit" [disabled]="!passwordForm.form.valid">
+          Update Password
+        </button>
+        <div class="preview-container">
+          <!-- Image par défaut ou photo actuelle -->
+          <img
+            [src]="previewUrl ? previewUrl : userData.photo || 'https://ui-avatars.com/api/?name=' + userData.username.replace(' ', '+')"
+            alt="Profile Preview"
+            class="preview-image"
+          />
+        
+          <!-- Bouton pour changer la photo -->
+          <button (click)="togglePhotoUpload()" class="btn-change-photo">Change Photo</button>
+        
+          <!-- Champ de sélection de fichier (affiché uniquement après clic sur le bouton) -->
+          <div *ngIf="showPhotoUpload" class="form-group">
+            <input type="file" id="photo" (change)="onFileSelected($event)" />
+          </div>
+        </div>
+      </form>
+  
+      <!-- Delete button -->
+      <div style="text-align: center; margin-top: 30px;">
+        <button (click)="onDelete()" class="btn-delete">Delete Account</button>
+      </div>
+      
+     
+      
+  
+      <!-- Messages -->
+      <p *ngIf="successMessage" class="success">{{ successMessage }}</p>
+      <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+    </div>
+  </div>
+
+  

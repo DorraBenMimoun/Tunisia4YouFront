@@ -24,7 +24,7 @@ export class PlaceComponent  implements OnInit {
     averageRating: 0,
     reviewCount: 0,
     tags: [],
-    images: [],
+            images: [],
   };
   editPlaceId: string | null = null;
   editPlace: Place | null = null;
@@ -46,15 +46,16 @@ export class PlaceComponent  implements OnInit {
     });
   }
   loadTags(): void {
-    this.placeService.getAllTags().subscribe({
-      next: (tags) => {
-        console.log('Tags récupérés :', tags);
-        this.tags = tags; // Assignez directement le tableau des tags
-        this.cdr.detectChanges(); // Force la détection des changements
+    this.tagService.getAllTags().subscribe({
+      next: (response) => {
+        console.log('Tags récupérés :', response);
+        this.tags = response.data; // Assignez uniquement la propriété `data` qui contient le tableau des tags
+              this.cdr.detectChanges(); // Force la détection des changements
+
       },
       error: (err) => {
         console.error('Erreur lors du chargement des tags :', err);
-        this.tags = [];
+        this.tags = []; // Assurez-vous que `tags` est un tableau vide en cas d'erreur
       }
     });
   }
@@ -73,7 +74,7 @@ export class PlaceComponent  implements OnInit {
         averageRating: 0,
         reviewCount: 0,
         tags: [],
-        images: [],
+               images: [],
       };
       this.loadPlaces(); // Recharge la liste des places
     });
@@ -97,4 +98,7 @@ export class PlaceComponent  implements OnInit {
       this.loadPlaces();
     });
   }
+
+  
+  
 }

@@ -9,9 +9,10 @@ export interface TagPlace {
   providedIn: 'root'
 })
 export class TagService {
-  private apiUrl = 'https://localhost:7056/tags'; 
+  private apiUrl = 'https://localhost:7056/tags';
 
   constructor(private http: HttpClient) {}
+
   getAllTags(): Observable<{ data: TagPlace[] }> {
     return this.http.get<{ data: TagPlace[] }>(this.apiUrl);
   }
@@ -32,3 +33,4 @@ export class TagService {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }
+
