@@ -160,15 +160,15 @@ h3 {
 }
 
 .bg-img-1 {
-  background-image: url(../img/slider/slider-img-1.jpg);
+  background-image: url(/assets/assets2/img/slider/slider-img-1.jpg);
 }
 
 .bg-img-2 {
-  background-image: url(../img/background-img/bg-img-2.jpg);
+  background-image: url(/assets/assets2/img/background-img/bg-img-2.jpg);
 }
 
 .cta-bg-1 {
-  background-image: url(../img/background-img/bg-img-3.jpg);
+  background-image: url(/assets/assets2/img/background-img/bg-img-3.jpg);
 }
 
 .overlay {
@@ -713,30 +713,30 @@ h3 {
 
 
 .slider_bg_1 {
-  background-image: url(../img/sidi.jpg);
+  background-image: url(/assets/assets2/img/sidi.jpg);
   background: size 10px; 
 }
 
 
 .slider_bg_2 {
-  background-image: url(../img/djerba.jpg);
+  background-image: url(/assets/assets2/img/djerba.jpg);
 }
 
 
 .slider_bg_3 {
-  background-image: url(../img/mdina.jpg);
+  background-image: url(/assets/assets2/img/mdina.jpg);
 }
 .slider_bg_4 {
-  background-image: url(../img/souse.jpg);
+  background-image: url(/assets/assets2/img/souse.jpg);
 }
 .slider_bg_5 {
-  background-image: url(../img/tbar.jpg);
+  background-image: url(/assets/assets2/img/tbar.jpg);
 }
 .slider_bg_6 {
-  background-image: url(../img/bizerte.jpg);
+  background-image: url(/assets/assets2/img/bizerte.jpg);
 }
 .slider_bg_7 {
-  background-image: url(../img/hammametville.jpeg);
+  background-image: url(/assets/assets2/img/hammametville.jpeg);
 }
 
 
@@ -1358,7 +1358,7 @@ h3 {
 
 
 .destination_banner_wrap {
-  background-image: url(../img/banner/destination.png);
+  background-image: url(/assets/assets2/img/banner/destination.png);
   padding: 340px 0;
   background-size: cover;
   background-position: center center;
@@ -1520,7 +1520,7 @@ h3 {
 
 
 .newletter_area {
-  background-image: url(../img/banner/newsletter.png);
+  background-image: url(/assets/assets2/img/banner/newsletter.png);
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -3081,7 +3081,7 @@ h6 {
 
 
 .primary-checkbox input:checked + label {
-  background: url(../img/elements/primary-check.png) no-repeat center center/cover;
+  background: url(/assets/assets2/img/elements/primary-check.png) no-repeat center center/cover;
   border: none;
 }
 
@@ -3123,7 +3123,7 @@ h6 {
 
 
 .confirm-checkbox input:checked + label {
-  background: url(../img/elements/success-check.png) no-repeat center center/cover;
+  background: url(/assets/assets2/img/elements/success-check.png) no-repeat center center/cover;
   border: none;
 }
 
@@ -3171,7 +3171,7 @@ h6 {
 
 
 .disabled-checkbox input:checked + label {
-  background: url(../img/elements/disabled-check.png) no-repeat center center/cover;
+  background: url(/assets/assets2/img/elements/disabled-check.png) no-repeat center center/cover;
   border: none;
 }
 
@@ -3213,7 +3213,7 @@ h6 {
 
 
 .primary-radio input:checked + label {
-  background: url(../img/elements/primary-radio.png) no-repeat center center/cover;
+  background: url(/assets/assets2/img/elements/primary-radio.png) no-repeat center center/cover;
   border: none;
 }
 
@@ -3255,7 +3255,7 @@ h6 {
 
 
 .confirm-radio input:checked + label {
-  background: url(../img/elements/success-radio.png) no-repeat center center/cover;
+  background: url(/assets/assets2/img/elements/success-radio.png) no-repeat center center/cover;
   border: none;
 }
 
@@ -3303,7 +3303,7 @@ h6 {
 
 
 .disabled-radio input:checked + label {
-  background: url(../img/elements/disabled-radio.png) no-repeat center center/cover;
+  background: url(/assets/assets2/img/elements/disabled-radio.png) no-repeat center center/cover;
   border: none;
 }
 

@@ -1,0 +1,71 @@
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>📍 Liste des lieux</h2>
+      <button class="btn btn-primary" (click)="goToAddPlace()">➕ Ajouter un lieu</button>
+    </div>
+  
+    <div class="mb-3">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="🔍 Rechercher par nom..."
+        [(ngModel)]="searchTerm"
+        (input)="searchPlaces()"
+      />
+    </div>
+  
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>📷</th>
+            <th>Nom</th>
+            <th>Catégorie</th>
+            <th>Description</th>
+            <th>Ville</th>
+            <th>Adresse</th>
+            <th>📞</th>
+            <th>Note</th>
+            <th>📅 Horaires</th>
+            <th>🏷️ Tags</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let place of filteredPlaces">
+            <td>
+              <img
+                *ngIf="place.images.length"
+                [src]="place.images[0]"
+                alt="image"
+                class="img-thumbnail"
+                width="80"
+              />
+            </td>
+            <td>{{ place.name }}</td>
+            <td>{{ place.category }}</td>
+            <td>{{ place.description }}</td>
+            <td>{{ place.city }}</td>
+            <td>{{ place.address }}</td>
+            <td>{{ place.phoneNumber }}</td>
+            <td>{{ place.averageRating }} ⭐</td>
+            <td>
+              <ul class="list-unstyled">
+                <li *ngFor="let day of getDays(place.openingHours)">
+                  <strong>{{ day }}:</strong> {{ place.openingHours[day] }}
+                </li>
+              </ul>
+            </td>
+            <td>
+              <span class="badge bg-secondary me-1" *ngFor="let tag of place.tags">#{{ tag }}</span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-warning me-2" (click)="editPlace(place.id)">✏️</button>
+              <button class="btn btn-sm btn-danger" (click)="deletePlace(place.id)">🗑️</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

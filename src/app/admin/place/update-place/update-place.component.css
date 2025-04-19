@@ -1,0 +1,29 @@
+.update-place-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 1rem;
+    background: #fdfdfd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #ccc;
+  }
+  
+  input, textarea {
+    width: 100%;
+  }
+  
+  .mt-2 {
+    margin-top: 0.5rem;
+  }
+  
+  .mt-3 {
+    margin-top: 1rem;
+  }
+  
+  .mt-4 {
+    margin-top: 1.5rem;
+  }
+  
+  button {
+    cursor: pointer;
+  }
+  

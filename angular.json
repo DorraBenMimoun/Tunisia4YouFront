@@ -35,9 +35,15 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/assets/assets2/css/bootstrap.min.css",
+              "src/assets/assets2/css/style.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/assets2/js/jquery-ui.min.js",
+              "src/assets/assets2/js/bootstrap.min.js",
+              "src/assets/assets2/js/main.js"
+            ]
           },
           "configurations": {
             "production": {

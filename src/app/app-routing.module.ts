@@ -11,25 +11,23 @@ import { ResetPassComponent } from './components/reset-pass/reset-pass.component
 import { ForgetPassComponent } from './components/forget-pass/forget-pass.component';
 
 const routes: Routes = [
-
   { path: '', component: HomeComponent },
-  { path: 'login', component: LoginComponent } ,
-  { path: 'signup', component: SignupComponent } ,
-  { path: 'tags', component: TagsComponent },
-  { path: '', redirectTo: '/admin/tags', pathMatch: 'full' },
-  { path: 'admin', component: DashboardComponent },
-  { path: 'places', component: PlaceComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'signup', component: SignupComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'reset', component: ResetPassComponent },
   { path: 'forget', component: ForgetPassComponent },
 
+  // 🔥 Supprime ces routes déplacées vers AdminModule
+  //{ path: 'tags', component: TagsComponent },
+  //{ path: 'places', component: PlaceComponent },
 
-   
+  // ✅ Lazy loading vers le module admin
+  { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },
 
-
-
+  // ✅ Redirection par défaut si rien n'est trouvé
+  { path: '**', redirectTo: '' }
 ];
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

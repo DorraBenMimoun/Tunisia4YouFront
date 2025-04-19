@@ -18,7 +18,7 @@ export interface User {
   providedIn: 'root'
 })
 export class UserService {
-  private baseUrl = 'https://localhost:7056/users'; 
+  private baseUrl = 'http://localhost:5066/users'; 
 
   constructor(private http: HttpClient) {}
 

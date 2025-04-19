@@ -9,6 +9,7 @@ export interface Place {
   category: string;
   description: string;
   address: string;
+  city:string;
   latitude: number;
   longitude: number;
   phoneNumber: string;
@@ -22,7 +23,7 @@ export interface Place {
   providedIn: 'root'
 })
 export class PlaceService {
-  private apiUrl = 'https://localhost:7056/places'; 
+  private apiUrl = 'http://localhost:5066/places'; 
 
   constructor(private http: HttpClient) {}
 
@@ -30,7 +31,7 @@ export class PlaceService {
     return this.http.get<{ data: Place[] }>(this.apiUrl);
   }
 
-  getPlaceById(id: string): Observable<Place> {
+  getPlaceById(id: string): Observable<any> {
     return this.http.get<Place>(`${this.apiUrl}/${id}`);
   }
 
@@ -39,6 +40,7 @@ export class PlaceService {
   }
 
   updatePlace(id: string, place: Place): Observable<any> {
+    console.log('Updating place with ID:', id, 'and data:', place);
     return this.http.put(`${this.apiUrl}/${id}`, place);
   }
 
@@ -46,9 +48,13 @@ export class PlaceService {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
   getAllTags(): Observable<TagPlace[]> {
-    return this.http.get<{ data: TagPlace[] }>('https://localhost:7056/tags').pipe(
+    return this.http.get<{ data: TagPlace[] }>('https://localhost:5066/tags').pipe(
       map(response => response.data) // Extrait uniquement la propriété `data`
     );
   }
+  getPlaceByName(name: string): Observable<Place[]> {
+    return this.http.get<Place[]>(`${this.apiUrl}/name/${name}`);
   }
+
+}
 

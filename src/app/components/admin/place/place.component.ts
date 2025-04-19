@@ -17,6 +17,7 @@ export class PlaceComponent  implements OnInit {
     category: '',
     description: '',
     address: '',
+    city: '',
     latitude: 0,
     longitude: 0,
     phoneNumber: '',
@@ -24,7 +25,7 @@ export class PlaceComponent  implements OnInit {
     averageRating: 0,
     reviewCount: 0,
     tags: [],
-            images: [],
+    images: [],
   };
   editPlaceId: string | null = null;
   editPlace: Place | null = null;
@@ -67,6 +68,7 @@ export class PlaceComponent  implements OnInit {
         category: '',
         description: '',
         address: '',
+        city: '',
         latitude: 0,
         longitude: 0,
         phoneNumber: '',

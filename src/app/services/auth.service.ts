@@ -17,7 +17,7 @@ export interface LoginResponse {
 })
 
 export class AuthService {
-  private baseUrl = 'https://localhost:7056'; 
+  private baseUrl = 'http://localhost:5066'; 
   isLoggedInSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
 
   constructor(private http: HttpClient) {}

@@ -9,7 +9,7 @@ export interface TagPlace {
   providedIn: 'root'
 })
 export class TagService {
-  private apiUrl = 'https://localhost:7056/tags';
+  private apiUrl = 'http://localhost:5066/tags';
 
   constructor(private http: HttpClient) {}
 

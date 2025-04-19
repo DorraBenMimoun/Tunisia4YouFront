@@ -1,0 +1,40 @@
+<div class="tags-container">
+    <h2>🌟 Gestion des #Tags</h2>
+  
+    <!-- Ajouter un nouveau tag -->
+    <div class="form-group add-tag-form">
+      <input
+        type="text"
+        [(ngModel)]="newTag"
+        placeholder="#AjouteTonTag"
+        class="form-control"
+      />
+      <button (click)="addTag()" class="btn-add">➕ </button>
+    </div>
+  
+    <!-- Liste des tags affichés -->
+    <div class="tags-list">
+      <div
+        class="tag-item animate-in"
+        *ngFor="let tag of tags; let i = index"
+        [class.editing]="editTagId === tag.id"
+      >
+        <ng-container *ngIf="editTagId !== tag.id">
+          <span class="hashtag">#{{ tag.libelle }}</span>
+          <div class="actions">
+            <button (click)="editTag(tag)" class="btn edit" title="Modifier">✏️</button>
+            <button (click)="deleteTag(tag.id)" class="btn delete" title="Supprimer">🗑️</button>
+          </div>
+        </ng-container>
+  
+        <ng-container *ngIf="editTagId === tag.id">
+          <input [(ngModel)]="editTagLibelle" class="form-control edit-input" />
+          <div class="actions">
+            <button (click)="updateTag()" class="btn save" title="Enregistrer">💾</button>
+            <button (click)="editTagId = null" class="btn cancel" title="Annuler">❌</button>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  
