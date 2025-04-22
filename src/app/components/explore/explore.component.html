@@ -1,0 +1,152 @@
+<!-- explore.component.html -->
+<div class="container-fluid explore-container p-5">
+  <!-- Search and Filters -->
+  <div class="row mb-4 g-3">
+    <!-- Search Bar -->
+    <div class="col-md-8">
+      <div class="search-bar input-group">
+        <span class="input-group-text bg-white border-end-0">
+          <i class="fas fa-search"></i>
+        </span>
+        <input
+          type="text"
+          class="form-control border-start-0"
+          placeholder="Rechercher un lieu, une catégorie, une ville..."
+          aria-label="Recherche"
+          [(ngModel)]="searchTerm"
+          (input)="searchPlaces()"
+        />
+      </div>
+    </div>
+
+    <!-- Filter Dropdowns -->
+    <div class="col-md-4">
+      <div class="d-flex gap-2">
+        <select
+          class="form-select"
+          [(ngModel)]="selectedCategory"
+          (ngModelChange)="applyFilters()"
+          aria-label="Filtrer par catégorie"
+        >
+          <option value="">Toutes catégories</option>
+          <option *ngFor="let category of categories" [value]="category">
+            {{ category }}
+          </option>
+          <option *ngIf="categories.length === 0" disabled>
+            Aucune catégorie
+          </option>
+        </select>
+
+        <select
+          class="form-select"
+          [(ngModel)]="selectedCity"
+          (ngModelChange)="applyFilters()"
+          aria-label="Filtrer par ville"
+        >
+          <option value="">Toutes villes</option>
+          <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+          <option *ngIf="cities.length === 0" disabled>Aucune ville</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tags Filter -->
+  <div class="mb-4">
+    <div class="d-flex flex-wrap gap-2">
+      <ng-container *ngIf="popularTags.length > 0; else noTags">
+        <span
+          *ngFor="let tag of popularTags"
+          class="badge rounded-pill tag-pill px-3 py-2"
+          [class.bg-primary]="selectedTags.includes(tag)"
+          [class.text-white]="selectedTags.includes(tag)"
+          [class.bg-light]="!selectedTags.includes(tag)"
+          style="cursor: pointer; transition: all 0.3s"
+          (click)="toggleTag(tag)"
+        >
+          #{{ tag }}
+        </span>
+      </ng-container>
+      <ng-template #noTags>
+        <span class="text-muted">Aucun tag populaire</span>
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- Places Grid -->
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+    <div class="col" *ngFor="let place of filteredPlaces">
+      <div
+        class="card h-100 place-card shadow-sm border-0"
+        style="transition: transform 0.2s"
+      >
+        <!-- Image -->
+        <div class="place-image-container position-relative">
+          <img
+            [src]="
+              place.images?.length
+                ? 'http://localhost:5066' + place.images[0]
+                : 'https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ='
+            "
+            class="card-img-top object-fit-cover"
+            alt="{{ place.name }}"
+            style="height: 200px; object-fit: cover"
+          />
+          <span class="badge bg-success position-absolute top-0 end-0 m-2">
+            {{ place.averageRating }} ⭐
+          </span>
+        </div>
+
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <h5 class="card-title">{{ place.name }}</h5>
+            <span class="badge bg-info text-dark">{{ place.category }}</span>
+          </div>
+
+          <p class="card-text text-muted mb-1">
+            <i class="bi bi-geo-alt"></i> {{ place.address }}, {{ place.city }}
+          </p>
+
+          <p class="card-text truncate-text mb-2">{{ place.description }}</p>
+
+          <div class="d-flex flex-wrap gap-1">
+            <span
+              *ngFor="let tag of place.tags"
+              class="badge bg-light text-dark"
+            >
+              #{{ tag }}
+            </span>
+          </div>
+        </div>
+
+        <div class="card-footer bg-white border-0">
+          <div class="d-flex justify-content-between align-items-center">
+            <small class="text-muted">
+              <i class="bi bi-clock"></i> {{ getTodaysHours(place) }}
+            </small>
+            <button
+              class="btn btn-sm btn-outline-primary"
+              (click)="viewDetails(place.id)"
+            >
+              Voir plus <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="filteredPlaces.length === 0" class="text-center py-5">
+    <img
+      src="assets/images/no-results.svg"
+      alt="Aucun résultat"
+      class="mb-3"
+      style="height: 150px"
+    />
+    <h4>Aucun lieu ne correspond à votre recherche</h4>
+    <button class="btn btn-link" (click)="resetFilters()">
+      Réinitialiser les filtres
+    </button>
+  </div>
+</div>

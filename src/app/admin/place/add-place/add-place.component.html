@@ -1,115 +1,186 @@
 <div class="places-container">
-    <h2>📍 Ajouter une Place</h2>
-  
-    <!-- Ajouter une nouvelle place -->
-    <div class="form-group add-place-form">
-      <input [(ngModel)]="newPlace.name" placeholder="Nom de la place" class="form-control" />
-      <input [(ngModel)]="newPlace.category" placeholder="Catégorie" class="form-control mt-2" />
-      <textarea [(ngModel)]="newPlace.description" placeholder="Description" class="form-control mt-2"></textarea>
-      <input [(ngModel)]="newPlace.address" placeholder="Adresse" class="form-control mt-2" />
-      <input [(ngModel)]="newPlace.latitude" type="number" placeholder="Latitude" class="form-control mt-2" />
-      <input [(ngModel)]="newPlace.longitude" type="number" placeholder="Longitude" class="form-control mt-2" />
-      <input [(ngModel)]="newPlace.phoneNumber" placeholder="Numéro de téléphone" class="form-control mt-2" />
-  
-      <h5 class="mt-4">🕐 Ajouter un horaire d'ouverture</h5>
+  <h2>📍 Ajouter une Place</h2>
 
-      <div class="row g-2 align-items-center">
-        <!-- Jour -->
-        <div class="col-md-3">
-          <select class="form-select" [(ngModel)]="selectedDay">
-            <option *ngFor="let day of days" [value]="day">{{ day }}</option>
-          </select>
-        </div>
-      
-        <!-- Heure début -->
-        <div class="col-md-3">
-          <select class="form-select" [(ngModel)]="openingHourStart">
-            <option *ngFor="let hour of hours" [value]="hour">{{ hour }}</option>
-          </select>
-        </div>
-      
-        <!-- Heure fin -->
-        <div class="col-md-3">
-          <select class="form-select" [(ngModel)]="openingHourEnd">
-            <option *ngFor="let hour of hours" [value]="hour">{{ hour }}</option>
-          </select>
-        </div>
-      
-        <!-- Bouton Ajouter -->
-        <div class="col-md-3">
-          <button class="btn btn-outline-primary w-100" (click)="addOpeningHour()">Ajouter</button>
-        </div>
+  <!-- Ajouter une nouvelle place -->
+  <div class="form-group add-place-form">
+    <input
+      [(ngModel)]="newPlace.name"
+      placeholder="Nom de la place"
+      class="form-control"
+    />
+    <input
+      type="text"
+      [(ngModel)]="newPlace.category"
+      (input)="filterCategories()"
+      (focus)="showCategoryDropdown = true"
+      (blur)="hideDropdownWithDelay()"
+      placeholder="Catégorie"
+      class="form-control mt-2"
+    />
+
+    <ul
+      *ngIf="showCategoryDropdown && filteredCategories.length"
+      class="list-group position-absolute -z-20 w-100"
+    >
+      <li
+        *ngFor="let category of filteredCategories"
+        (mousedown)="selectCategory(category)"
+        class="list-group-item list-group-item-action"
+        style="cursor: pointer"
+      >
+        {{ category }}
+      </li>
+    </ul>
+
+    <textarea
+      [(ngModel)]="newPlace.description"
+      placeholder="Description"
+      class="form-control mt-2"
+    ></textarea>
+    <input
+      [(ngModel)]="newPlace.address"
+      placeholder="Adresse"
+      class="form-control mt-2"
+    />
+    <input
+      [(ngModel)]="newPlace.latitude"
+      type="number"
+      placeholder="Latitude"
+      class="form-control mt-2"
+    />
+    <input
+      [(ngModel)]="newPlace.longitude"
+      type="number"
+      placeholder="Longitude"
+      class="form-control mt-2"
+    />
+    <input
+      [(ngModel)]="newPlace.phoneNumber"
+      placeholder="Numéro de téléphone"
+      class="form-control mt-2"
+    />
+
+    <h5 class="mt-4">🕐 Ajouter un horaire d'ouverture</h5>
+
+    <div class="row g-2 align-items-center">
+      <!-- Jour -->
+      <div class="col-md-3">
+        <select class="form-select" [(ngModel)]="selectedDay">
+          <option *ngFor="let day of days" [value]="day">{{ day }}</option>
+        </select>
       </div>
-      
-      <!-- Affichage des horaires enregistrés -->
-      <div class="mt-3" *ngIf="getOpeningDays().length > 0">
-        <strong>Horaires enregistrés :</strong>
-        <ul class="list-group mt-2">
-          <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let day of getOpeningDays()">
-            {{ day }} : {{ newPlace.openingHours[day] }}
-            <button class="btn btn-sm btn-danger" (click)="removeOpeningHour(day)">❌</button>
-          </li>
-        </ul>
+
+      <!-- Heure début -->
+      <div class="col-md-3">
+        <select class="form-select" [(ngModel)]="openingHourStart">
+          <option *ngFor="let hour of hours" [value]="hour">{{ hour }}</option>
+        </select>
       </div>
-      
-      <h5 class="mt-3">🏷️ Rechercher un tag </h5>
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Rechercher un tag..."
-        [(ngModel)]="tagSearch"
-        (input)="filterTags()"
-      />
-      
-      <ul class="list-group mt-2" *ngIf="filteredTags.length > 0">
-        <li
-          class="list-group-item list-group-item-action"
-          *ngFor="let tag of filteredTags"
-          (click)="addTag(tag.libelle)"
-          style="cursor: pointer"
+
+      <!-- Heure fin -->
+      <div class="col-md-3">
+        <select class="form-select" [(ngModel)]="openingHourEnd">
+          <option *ngFor="let hour of hours" [value]="hour">{{ hour }}</option>
+        </select>
+      </div>
+
+      <!-- Bouton Ajouter -->
+      <div class="col-md-3">
+        <button
+          class="btn btn-outline-primary w-100"
+          (click)="addOpeningHour()"
         >
-          {{ tag.libelle }}
+          Ajouter
+        </button>
+      </div>
+    </div>
+
+    <!-- Affichage des horaires enregistrés -->
+    <div class="mt-3" *ngIf="getOpeningDays().length > 0">
+      <strong>Horaires enregistrés :</strong>
+      <ul class="list-group mt-2">
+        <li
+          class="list-group-item d-flex justify-content-between align-items-center"
+          *ngFor="let day of getOpeningDays()"
+        >
+          {{ day }} : {{ newPlace.openingHours[day] }}
+          <button
+            class="btn btn-sm btn-danger"
+            (click)="removeOpeningHour(day)"
+          >
+            ❌
+          </button>
         </li>
       </ul>
-      
-      <div class="mt-3" *ngIf="selectedTags.length > 0">
-        <strong>Tags sélectionnés :</strong>
-        <div class="d-flex flex-wrap gap-2 mt-2">
-          <span
-            *ngFor="let tag of selectedTags"
-            class="badge bg-primary p-2"
-            style="cursor: pointer"
-          >
-            {{ tag }}
-            <span class="ms-1" (click)="removeTag(tag)">❌</span>
-          </span>
-        </div>
-      </div>
-      
-      
-  
-  
-  
-  
-  
-      <label class="mt-3">🖼️ Images :</label>
-      <input type="file" (change)="onImageSelected($event)" class="form-control mt-2" multiple />
-      
-      <!-- Aperçu des images sélectionnées -->
-      <div class="row mt-3" *ngIf="newPlace.images && newPlace.images.length > 0">
-        <strong class="col-12">Aperçu des images :</strong>
-        <div class="col-md-3 mb-3" *ngFor="let img of newPlace.images; let i = index">
-          <div class="position-relative">
-            <img [src]="img" alt="Image" class="img-thumbnail w-100" style="height: 150px; object-fit: cover;" />
-            <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1"
-                    (click)="removeImage(i)">❌</button>
-          </div>
-        </div>
-      </div>
-      
-      <button (click)="addPlace()" class="btn-add-place">Ajouter</button>
     </div>
-  
-   
+
+    <h5 class="mt-3">🏷️ Rechercher un tag</h5>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Rechercher un tag..."
+      [(ngModel)]="tagSearch"
+      (input)="filterTags()"
+    />
+
+    <ul class="list-group mt-2" *ngIf="filteredTags.length > 0">
+      <li
+        class="list-group-item list-group-item-action"
+        *ngFor="let tag of filteredTags"
+        (click)="addTag(tag.libelle)"
+        style="cursor: pointer"
+      >
+        {{ tag.libelle }}
+      </li>
+    </ul>
+
+    <div class="mt-3" *ngIf="selectedTags.length > 0">
+      <strong>Tags sélectionnés :</strong>
+      <div class="d-flex flex-wrap gap-2 mt-2">
+        <span
+          *ngFor="let tag of selectedTags"
+          class="badge bg-primary p-2"
+          style="cursor: pointer"
+        >
+          {{ tag }}
+          <span class="ms-1" (click)="removeTag(tag)">❌</span>
+        </span>
+      </div>
+    </div>
+
+    <label class="mt-3">🖼️ Images :</label>
+    <input
+      type="file"
+      (change)="onImageSelected($event)"
+      class="form-control mt-2"
+      multiple
+    />
+
+    <!-- Aperçu des images sélectionnées -->
+    <div class="row mt-3" *ngIf="newPlace.images && newPlace.images.length > 0">
+      <strong class="col-12">Aperçu des images :</strong>
+      <div
+        class="col-md-3 mb-3"
+        *ngFor="let img of newPlace.images; let i = index"
+      >
+        <div class="position-relative">
+          <img
+            [src]="img"
+            alt="Image"
+            class="img-thumbnail w-100"
+            style="height: 150px; object-fit: cover"
+          />
+          <button
+            type="button"
+            class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1"
+            (click)="removeImage(i)"
+          >
+            ❌
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <button (click)="addPlace()" class="btn-add-place">Ajouter</button>
   </div>
-  
+</div>

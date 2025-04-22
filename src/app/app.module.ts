@@ -19,6 +19,11 @@ import { ForgetPassComponent } from './components/forget-pass/forget-pass.compon
 import { authInterceptor } from './interceptors/auth.interceptor';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+import { ExploreComponent } from './components/explore/explore.component';
+import { PlaceDetailsComponent } from './components/place-details/place-details.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,13 +38,22 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
     PlaceComponent,
     ResetPassComponent,
     ForgetPassComponent,
+    ExploreComponent,
+    PlaceDetailsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    ],
+    BrowserAnimationsModule, 
+    ToastrModule.forRoot({
+      timeOut: 3000, // 5 secondes
+      positionClass: 'toast-bottom-right', // position
+      preventDuplicates: true,
+      progressBar: true,
+    })
+        ],
     providers: [
       provideHttpClient(withInterceptors([authInterceptor]))
       ],

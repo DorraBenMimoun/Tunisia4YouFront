@@ -9,15 +9,18 @@ import { PlaceComponent } from './components/admin/place/place.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ResetPassComponent } from './components/reset-pass/reset-pass.component';
 import { ForgetPassComponent } from './components/forget-pass/forget-pass.component';
+import { ExploreComponent } from './components/explore/explore.component';
+import { PlaceDetailsComponent } from './components/place-details/place-details.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'profile', component: ProfileComponent },
+  { path: 'explore', component:ExploreComponent},
   { path: 'reset', component: ResetPassComponent },
   { path: 'forget', component: ForgetPassComponent },
-
+  { path: 'place/:id', component: PlaceDetailsComponent },
   // 🔥 Supprime ces routes déplacées vers AdminModule
   //{ path: 'tags', component: TagsComponent },
   //{ path: 'places', component: PlaceComponent },
