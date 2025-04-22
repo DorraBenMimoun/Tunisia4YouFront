@@ -11,6 +11,8 @@ import { ResetPassComponent } from './components/reset-pass/reset-pass.component
 import { ForgetPassComponent } from './components/forget-pass/forget-pass.component';
 import { ExploreComponent } from './components/explore/explore.component';
 import { PlaceDetailsComponent } from './components/place-details/place-details.component';
+import { UserListsComponent } from './components/user-lists/user-lists.component';
+import { ViewListComponent } from './components/view-list/view-list.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -21,6 +23,8 @@ const routes: Routes = [
   { path: 'reset', component: ResetPassComponent },
   { path: 'forget', component: ForgetPassComponent },
   { path: 'place/:id', component: PlaceDetailsComponent },
+  { path: 'lists', component: UserListsComponent},
+  { path:'list/:id', component: ViewListComponent},
   // 🔥 Supprime ces routes déplacées vers AdminModule
   //{ path: 'tags', component: TagsComponent },
   //{ path: 'places', component: PlaceComponent },

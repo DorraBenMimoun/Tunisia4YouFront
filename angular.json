@@ -30,6 +30,7 @@
             "tsConfig": "tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
+              "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css",
               "src/assets/assets2/css/bootstrap.min.css",
               "src/assets/assets2/css/style.css",
@@ -89,8 +90,15 @@
             "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles.css"],
-            "scripts": []
+            "styles": [
+              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/styles.css"
+            ],
+            "scripts": [
+              "src/assets/assets2/js/jquery-ui.min.js",
+              "src/assets/assets2/js/bootstrap.min.js",
+              "src/assets/assets2/js/main.js"
+            ]
           }
         }
       }

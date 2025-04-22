@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Place, PlaceService } from '../../services/place.service';
+import { AddToListsComponent } from '../add-to-lists/add-to-lists.component';
 
 @Component({
   selector: 'app-place-details',
@@ -8,17 +9,24 @@ import { Place, PlaceService } from '../../services/place.service';
   styleUrls: ['./place-details.component.css']
 })
 export class PlaceDetailsComponent {
-    place!: Place;
+  place!: Place;
   currentImageIndex = 0;
   id = "";
+
+  @ViewChild(AddToListsComponent) addToListModal!: AddToListsComponent;
+
+
   constructor(private route: ActivatedRoute,
         private placeService: PlaceService,
-    
   ) {}
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id') ?? '';
     this.loadPlace();
+  }
+
+  openAddToListModal() {
+    this.addToListModal.openModal(this.place.id);
   }
 
   loadPlace(): void {

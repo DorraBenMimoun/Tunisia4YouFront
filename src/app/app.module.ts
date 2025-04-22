@@ -23,6 +23,19 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { ExploreComponent } from './components/explore/explore.component';
 import { PlaceDetailsComponent } from './components/place-details/place-details.component';
+import { UserListsComponent } from './components/user-lists/user-lists.component';
+import { CreateListComponent } from './components/create-list/create-list.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { AddToListsComponent } from './components/add-to-lists/add-to-lists.component';
+import { ViewListComponent } from './components/view-list/view-list.component';
+
+
 
 @NgModule({
   declarations: [
@@ -39,14 +52,23 @@ import { PlaceDetailsComponent } from './components/place-details/place-details.
     ResetPassComponent,
     ForgetPassComponent,
     ExploreComponent,
-    PlaceDetailsComponent
+    PlaceDetailsComponent,
+    UserListsComponent,
+    CreateListComponent,
+    AddToListsComponent,
+    ViewListComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule, 
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
     ToastrModule.forRoot({
       timeOut: 3000, // 5 secondes
       positionClass: 'toast-bottom-right', // position
@@ -55,7 +77,8 @@ import { PlaceDetailsComponent } from './components/place-details/place-details.
     })
         ],
     providers: [
-      provideHttpClient(withInterceptors([authInterceptor]))
+      provideHttpClient(withInterceptors([authInterceptor])),
+      provideAnimationsAsync()
       ],
     
   bootstrap: [AppComponent]
