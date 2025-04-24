@@ -42,7 +42,13 @@ export class ListServices {
     return this.http.get<{ data: List[] }>(`${this.apiUrl}/me/places/${placeId}`);
   }
 
+  getListById(id: string): Observable<List>{
+  return this.http.get< List >(`${this.apiUrl}/${id}`);
+  }
   
+  getPlacesInList(id: string): Observable<any> {
+    return this.http.get<{ data: List[] }>(`${this.apiUrl}/${id}/places`);
+  }
 
 
   // getTagById(id: string): Observable<TagPlace> {

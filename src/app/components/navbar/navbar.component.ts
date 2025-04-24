@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -10,28 +11,36 @@ import { Router } from '@angular/router';
 export class NavbarComponent {
   isLoggedIn: boolean = false;
   isAdmin: boolean = false; 
-
+  isLoggedInSubscription !: Subscription;
 
   constructor(private authService: AuthService,private router: Router) {}
 
   ngOnInit() {
- this.authService.getIsLoggedIn().subscribe((loggedInStatus) => {
-  this.isLoggedIn = loggedInStatus;
-    // only update isAdmin if user is logged in
-    if (this.isLoggedIn) {
-      this.isAdmin = this.authService.isAdmin();
-    } else {
-      this.isAdmin = false; // <- prevent leftover value
-    }
-  });
-
-
+    this.isLoggedInSubscription = this.authService.isLoggedInSubject.subscribe((isLoggedIn) => {
+      this.isLoggedIn = isLoggedIn;
+  
+      if (isLoggedIn) {
+        const id = this.authService.getUserId();
+        if (id) {
+          this.authService.getUserById(id).subscribe((user) => {
+            this.authService.setUser(user);
+            this.isAdmin = user.isAdmin;
+          });
+        }
+      } else {
+        this.isAdmin = false;
+      }
+    });
   }
-
+  
   logout() {
     this.authService.logout();
-
     this.router.navigate(['/login']);
+    this.isAdmin = false; 
+    this.isLoggedIn = false; 
   }
 
+  ngOnDestroy() {
+    this.isLoggedInSubscription.unsubscribe(); // Unsubscribe to avoid memory leaks
+  }
 }

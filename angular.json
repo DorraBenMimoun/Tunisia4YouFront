@@ -34,12 +34,14 @@
               "src/styles.css",
               "src/assets/assets2/css/bootstrap.min.css",
               "src/assets/assets2/css/style.css",
+
               "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
               "src/assets/assets2/js/jquery-ui.min.js",
               "src/assets/assets2/js/bootstrap.min.js",
-              "src/assets/assets2/js/main.js"
+              "src/assets/assets2/js/main.js",
+              "src/assets/assets2/js/owl.carousel.min.js"
             ]
           },
           "configurations": {
@@ -97,7 +99,8 @@
             "scripts": [
               "src/assets/assets2/js/jquery-ui.min.js",
               "src/assets/assets2/js/bootstrap.min.js",
-              "src/assets/assets2/js/main.js"
+              "src/assets/assets2/js/main.js",
+              "src/assets/assets2/js/owl.carousel.min.js"
             ]
           }
         }
