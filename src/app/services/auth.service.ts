@@ -37,7 +37,6 @@ export class AuthService {
     localStorage.setItem('jwtToken', token);
     localStorage.setItem('userId', userId);
     localStorage.setItem('isAdmin', JSON.stringify(isAdmin));  
- // Enregistre le statut d'administrateur
  this.isLoggedInSubject.next(true); 
 
   }

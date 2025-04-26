@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GestionTagComponent } from './gestion-tag.component';
+import { ReviewComponent } from './review.component';
 
-describe('GestionTagComponent', () => {
-  let component: GestionTagComponent;
-  let fixture: ComponentFixture<GestionTagComponent>;
+describe('ReviewComponent', () => {
+  let component: ReviewComponent;
+  let fixture: ComponentFixture<ReviewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [GestionTagComponent]
+      declarations: [ReviewComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(GestionTagComponent);
+    fixture = TestBed.createComponent(ReviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
