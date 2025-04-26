@@ -1,1 +1,12 @@
-<p>review works!</p>
+<div class="p-4 bg-white rounded shadow">
+    <h2 class="text-lg font-bold mb-4">Laisser un commentaire</h2>
+  
+    <form (ngSubmit)="submitReview()">
+      <textarea [(ngModel)]="commentaire" name="commentaire" placeholder="Votre commentaire..." class="w-full p-2 border rounded mb-4" required></textarea>
+      
+      <input type="number" [(ngModel)]="note" name="note" min="1" max="5" placeholder="Note sur 5" class="w-full p-2 border rounded mb-4" required>
+  
+      <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Envoyer</button>
+    </form>
+  </div>
+  

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { PlaceComponent } from '../components/admin/place/place.component';
 import { TagPlace } from './tag.service';
+
 export interface Place {
   id: string;
   name: string;
@@ -18,6 +19,7 @@ export interface Place {
   reviewCount: number;
   tags: string[];
   images: string[];
+
 }
 @Injectable({
   providedIn: 'root'
@@ -123,7 +125,8 @@ export class PlaceService {
   }
   
 
-  
+
+
 
 }
 

@@ -13,6 +13,7 @@ import { ExploreComponent } from './components/explore/explore.component';
 import { PlaceDetailsComponent } from './components/place-details/place-details.component';
 import { UserListsComponent } from './components/user-lists/user-lists.component';
 import { ViewListComponent } from './components/view-list/view-list.component';
+import { ReviewComponent } from './components/review/review.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -25,6 +26,8 @@ const routes: Routes = [
   { path: 'place/:id', component: PlaceDetailsComponent },
   { path: 'lists', component: UserListsComponent},
   { path:'list/:id', component: ViewListComponent},
+  { path: 'places/:placeId/reviews', component: ReviewComponent},
+
   // 🔥 Supprime ces routes déplacées vers AdminModule
   //{ path: 'tags', component: TagsComponent },
   //{ path: 'places', component: PlaceComponent },

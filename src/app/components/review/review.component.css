@@ -1,0 +1,76 @@
+.review-container {
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #fff9f4;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 132, 0, 0.2);
+  }
+  
+  .comment-item {
+    padding: 15px;
+    border-bottom: 1px solid #ffd6ba;
+  }
+  
+  .comment-item:last-child {
+    border-bottom: none;
+  }
+  
+  .comment-item h4 {
+    margin: 0;
+    color: #b23e57;
+  }
+  
+  .comment-item p {
+    margin: 5px 0;
+  }
+  
+  .stars {
+    color: gold;
+  }
+  
+  .star {
+    font-size: 20px;
+    color: #ccc;
+  }
+  
+  .star.filled {
+    color: gold;
+  }
+  
+  .add-comment {
+    margin-top: 30px;
+  }
+  
+  .add-comment textarea {
+    width: 100%;
+    min-height: 100px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ffd6ba;
+  }
+  
+  .add-comment .rating {
+    margin: 10px 0;
+  }
+  
+  .add-comment select {
+    margin-left: 10px;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  
+  .add-comment button {
+    background: #ff7b54;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .add-comment button:hover {
+    background: #ff5722;
+  }
+  
