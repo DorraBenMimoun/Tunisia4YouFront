@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { List, ListServices } from '../../services/list.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -8,6 +8,9 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './add-to-lists.component.css'
 })
 export class AddToListsComponent {
+
+  @Output() placeRemoved = new EventEmitter<string>();
+
   lists: List[] = [];
 
   showModal = false;
@@ -94,6 +97,11 @@ export class AddToListsComponent {
     Promise.all(allRequests.map(req => req.toPromise()))
       .then(() => {
         this.toastr.success('Modifications enregistrées.');
+        if(toRemove.length > 0) {
+          for (const id of toRemove) {
+            this.placeRemoved.emit(id); // Emit the event for each removed place
+          }
+        }
         this.closeModal();
       })
       .catch((error) => {

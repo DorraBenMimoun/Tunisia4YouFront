@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Place, PlaceService } from '../../services/place.service';
 import { Router } from '@angular/router';
+import { AddToListsComponent } from '../add-to-lists/add-to-lists.component';
 
 @Component({
   selector: 'app-explore',
@@ -11,6 +12,9 @@ export class ExploreComponent implements OnInit {
   places: Place[] = [];
   filteredPlaces: Place[] = [];
   searchTerm: string = '';
+
+        @ViewChild(AddToListsComponent) addToListModal!: AddToListsComponent;
+  
 
   categories: string[] = ["test", "Restaurant", "string"];
   cities: string[] = [];
@@ -71,6 +75,12 @@ export class ExploreComponent implements OnInit {
       .slice(0, 10)
       .map(entry => entry[0]);
   }
+
+  
+  openAddToListModal(placeId : string) {
+    this.addToListModal.openModal(placeId);
+  }
+
 
   applyFilters(): void {
     this.placeService.searchPlaces(

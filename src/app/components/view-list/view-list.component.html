@@ -1,1 +1,75 @@
-<p>view-list works!</p>
+<div class="max-w-6xl mx-auto p-6" *ngIf="list">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-800 flex items-center gap-2">
+      <i class="fas fa-list-alt text-blue-500"></i> {{ list?.nom }}
+    </h1>
+    <p class="text-gray-600 mt-2 text-lg">{{ list?.description }}</p>
+  </div>
+
+  <div *ngIf="places?.length === 0" class="text-center my-8">
+    <i class="fas fa-map-signs text-gray-400 text-5xl mb-4"></i>
+    <p class="text-gray-500 text-xl">
+      Aucun lieu n'a été ajouté à cette liste pour le moment.
+    </p>
+    <p class="text-gray-400">
+      Commencez à ajouter des lieux pour créer votre collection !
+    </p>
+  </div>
+  <div class="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+    <a
+      *ngFor="let place of places"
+      [routerLink]="['/place', place.id]"
+      class="block bg-white shadow-md rounded-2xl overflow-hidden hover:shadow-xl transition-shadow duration-300 relative"
+    >
+      <div class="relative">
+        <img
+          *ngIf="place.images?.length"
+          [src]="
+            place.images?.length
+              ? 'http://localhost:5066' + place.images[0]
+              : 'https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ='
+          "
+          alt="{{ place.name }}"
+          class="w-full h-48 object-cover"
+        />
+        <div class="absolute top-2 right-2 z-10">
+          <button
+            (click)="
+              $event.stopPropagation();
+              $event.preventDefault();
+              openAddToListModal(place.id)
+            "
+            class="bg-white text-green-600 hover:text-green-800 border border-green-500 rounded-full p-2 shadow hover:shadow-md transition"
+          >
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+      </div>
+      <div class="p-4">
+        <h2 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
+          <i class="fas fa-map-marker-alt text-red-500"></i> {{ place.name }}
+        </h2>
+        <p class="text-sm text-gray-600 mt-1 mb-3 line-clamp-3">
+          {{ place.description }}
+        </p>
+
+        <div class="text-sm text-gray-500 mb-2">
+          <div class="d-flex flex-wrap gap-1">
+            <span
+              *ngFor="let tag of place.tags"
+              class="badge bg-light text-dark"
+            >
+              #{{ tag }}
+            </span>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center">
+          <span class="text-xs text-gray-400">📍 {{ place.address }}</span>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<app-add-to-lists (placeRemoved)="removePlaceFromList($event)" />

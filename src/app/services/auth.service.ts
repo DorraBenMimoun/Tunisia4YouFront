@@ -3,14 +3,16 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 export interface LoginResponse {
   token: string;
-  user: {
-    id: string;
-    username: string;
-    email: string;
-    isAdmin: boolean;
-    photo?: string;
-    createdAt?: string;
-  };
+  user: User;
+}
+
+export interface User {
+  id: string;
+  username: string;
+  email: string;
+  isAdmin: boolean;
+  photo?: string;
+  createdAt?: string;
 }
 @Injectable({
   providedIn: 'root'
@@ -19,8 +21,11 @@ export interface LoginResponse {
 export class AuthService {
   private baseUrl = 'http://localhost:5066'; 
   isLoggedInSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
+  user! : User;
 
   constructor(private http: HttpClient) {}
+
+
 
   register(data: { username: string; email: string; passwordHash: string }) {
     console.log("Appel HTTP vers le backend :", data); // 👈 log
@@ -48,6 +53,16 @@ export class AuthService {
   getUserId(): string | null {
     return localStorage.getItem('userId');
   }
+  getUserById(userId: string): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/users/${userId}`);
+  }
+
+  setUser(user: User): void {
+    this.user = user;
+  }
+
+  
+
   getUserIdFromToken(): string | null {
     const token = localStorage.getItem('jwtToken');
     if (!token) return null;
