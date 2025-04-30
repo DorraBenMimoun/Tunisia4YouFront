@@ -20,5 +20,17 @@ export class ReviewService {
   createReview(review: Review): Observable<any> {
     return this.http.post<any>(this.apiUrl, review);
   }
+  getReviewsByPlace(placeId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/place/${placeId}`);
+  }
+  deleteReview(id: string) {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  }
+  getReviewsByUser(userId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/user/${userId}`);
+  }
+  getReviewById(reviewId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${reviewId}`);
+  }  
 
 }

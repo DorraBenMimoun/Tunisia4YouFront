@@ -56,6 +56,11 @@ export class AuthService {
   getUserById(userId: string): Observable<User> {
     return this.http.get<User>(`${this.baseUrl}/users/${userId}`);
   }
+  getUserNameById(userId: string) {
+    return this.http.get<{ name: string }>(`${this.baseUrl}/users/${userId}`);
+  }
+  
+  
 
   setUser(user: User): void {
     this.user = user;

@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 export interface User {
   id: string;
@@ -12,6 +12,8 @@ export interface User {
   isAdmin?: boolean;
   currentPassword?: string;
   newPassword?: string;
+  dateFinBannissement?: string | null; 
+  isBanni?: boolean;
 }
 
 @Injectable({
@@ -45,5 +47,50 @@ export class UserService {
     const headers = this.getAuthHeaders();
     return this.http.get<User[]>(this.baseUrl, { headers });
   }
+  getAllUser(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.baseUrl}`).pipe(
+      map(users => users.map(user => this.checkAndUnban(user)))
+    );
+  }
+
+  getUserId(id: string): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/${id}`).pipe(
+      map(user => this.checkAndUnban(user))
+    );
+  }
+
+  private checkAndUnban(user: User): User {
+    if (user.dateFinBannissement) {
+      const now = new Date();
+      const banEndDate = new Date(user.dateFinBannissement);
+      if (banEndDate <= now) {
+        user.dateFinBannissement = null;
+        user.isBanni = false;
+      } else {
+        user.isBanni = true;
+      }
+    } else {
+      user.isBanni = false;
+    }
+    return user;
+  }
+  banUser(userId: string, dateFinBannissement: string) {
+    return this.http.patch(`http://localhost:5066/users/${userId}/ban`, JSON.stringify(dateFinBannissement), {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+  }
+  getReportsForUser(userId: string) {
+    return this.http.get<any[]>(`http://localhost:5066/reports/user/${userId}`);
+  }
+  
+  
+  
+  
+
+
+  
+  
   
 }

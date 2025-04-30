@@ -1,12 +1,122 @@
-<div class="p-4 bg-white rounded shadow">
-    <h2 class="text-lg font-bold mb-4">Laisser un commentaire</h2>
-  
-    <form (ngSubmit)="submitReview()">
-      <textarea [(ngModel)]="commentaire" name="commentaire" placeholder="Votre commentaire..." class="w-full p-2 border rounded mb-4" required></textarea>
-      
-      <input type="number" [(ngModel)]="note" name="note" min="1" max="5" placeholder="Note sur 5" class="w-full p-2 border rounded mb-4" required>
-  
-      <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Envoyer</button>
-    </form>
+<div class="p-6 bg-white rounded-2xl shadow-md max-w-lg mx-auto mt-8">
+  <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Laisser un commentaire</h2>
+
+  <form (ngSubmit)="submitReview()" class="space-y-6">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2" for="commentaire">Commentaire</label>
+      <textarea 
+        id="commentaire"
+        [(ngModel)]="commentaire"
+        name="commentaire"
+        rows="4"
+        placeholder="Votre commentaire..."
+        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+        required
+      ></textarea>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">Note</label>
+      <div class="flex space-x-2">
+        <ng-container *ngFor="let star of [1,2,3,4,5]">
+          <button 
+            type="button" 
+            (click)="note = star"
+            class="text-3xl focus:outline-none transition transform hover:scale-125"
+          >
+            <span [ngClass]="star <= note ? 'text-yellow-400' : 'text-gray-300'">⭐</span>
+          </button>
+        </ng-container>
+      </div>
+    </div>
+
+    <button 
+      type="submit"
+      class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-lg shadow-md transition transform hover:-translate-y-0.5"
+    >
+      Envoyer votre avis
+    </button>
+  </form>
+
+  <!-- Partie récupération des anciens commentaires -->
+  <div class="mt-10 space-y-6">
+    <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Avis existants</h3>
+
+    <div *ngFor="let review of reviews" class="flex space-x-4 p-4 bg-gray-50 rounded-lg shadow-md items-start relative">
+      <img 
+        [src]="review.userAvatar || 'https://ui-avatars.com/api/?name=' + (review.userName || 'User')"
+        alt="Avatar"
+        class="w-12 h-12 rounded-full object-cover"
+      >
+    
+      <div class="flex-1">
+        <div class="flex justify-between items-center mb-2">
+          <p class="font-semibold text-gray-800">
+            {{ review.userName }}
+          </p>
+          <div class="flex items-center space-x-2">
+            <p class="text-sm text-gray-500">
+              {{ review.createdAt | date: 'dd MMMM yyyy' }}
+            </p>
+          </div>
+        </div>
+        
+        <p class="text-gray-700 mb-2">{{ review.commentaire }}</p>
+    
+        <div class="flex items-center space-x-1">
+          <ng-container *ngFor="let star of [].constructor(review.note)">
+            <span class="text-2xl text-yellow-400">⭐</span>
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- Bouton Supprimer -->
+      <button 
+        (click)="deleteReview(review.id)" 
+        class="text-red-500 hover:text-red-700 text-sm font-semibold absolute bottom-0 right-0 m-2"
+      >
+        🗑️
+      </button>
+      <button 
+      (click)="openReportModal(review.id, review.userId)"
+      class="text-red-500 hover:text-red-700 text-sm font-semibold absolute bottom-0 right-5 m-2"
+    >
+    👎
+    </button>
   </div>
-  
+</div>
+
+<!-- Fenêtre modale pour signaler un commentaire -->
+<div *ngIf="isModalOpen" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+    <h3 class="text-lg font-semibold mb-4">Signaler un commentaire</h3>
+    <form (ngSubmit)="submitReport()">
+      <div class="mb-4">
+        <label for="reason" class="block text-sm font-medium text-gray-700">Raison du signalement</label>
+        <select id="reason" [(ngModel)]="reason" name="reason" class="w-full p-2 border border-gray-300 rounded-lg">
+          <option value="Inappropriate content">Contenu inapproprié</option>
+          <option value="Spam">Spam</option>
+          <option value="Harassment">Harcèlement</option>
+          <!-- Ajoutez d'autres options si nécessaire -->
+        </select>
+      </div>
+      
+      <div class="flex justify-end space-x-2">
+        <button 
+          type="button"
+          (click)="closeReportModal()"
+          class="text-gray-500 hover:text-gray-700 text-sm font-semibold"
+        >
+          Annuler
+        </button>
+        <button 
+          type="submit"
+          class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg"
+        >
+          Soumettre le signalement
+        </button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>

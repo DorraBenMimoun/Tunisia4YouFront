@@ -6,6 +6,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ListPlaceComponent } from './place/list-place/list-place.component';
 import { UpdatePlaceComponent } from './place/update-place/update-place.component';
 import { GestionTagComponent } from './tag/gestion-tag/gestion-tag.component';
+import { ReportComponent } from './report/report.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -14,6 +15,8 @@ const routes: Routes = [
   { path: 'places/edit/:id', component: UpdatePlaceComponent },
 
   { path: 'tags', component: GestionTagComponent },
+  { path: 'reports', component: ReportComponent },
+
 
 ];
 

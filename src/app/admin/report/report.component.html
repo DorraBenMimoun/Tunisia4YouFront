@@ -1,0 +1,73 @@
+<!-- admin/user-management.component.html -->
+<div class="p-6">
+    <h2 class="text-2xl font-bold mb-4">Gestion des Utilisateurs</h2>
+  
+    <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="py-2 px-4">Nom</th>
+          <th class="py-2 px-4">Email</th>
+          <th class="py-2 px-4">Statut</th>
+          <th class="py-2 px-4">Signalements</th>
+          <th class="py-2 px-4">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users" class="border-t">
+          <td class="py-2 px-4">{{ user.username }}</td>
+          <td class="py-2 px-4">{{ user.email }}</td>
+          
+          <td class="py-2 px-4">
+            <span 
+              [ngClass]="{
+                'text-red-600': user.isBanni,
+                'text-green-600': !user.isBanni
+              }">
+              {{ user.isBanni ? 'Banni' : 'Actif' }}
+            </span>
+          </td>
+          <td>
+            <button *ngIf="hasReports()" (click)="openReportsModal()" class="btn btn-warning">
+              Voir signalements
+            </button>
+            <span *ngIf="!hasReports()">Aucun signalement</span>
+          </td>
+          
+          <td class="py-2 px-4">
+            <button 
+              *ngIf="!user.isBanni"
+              (click)="banUser(user.id)" 
+              class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-lg text-sm">
+              🚫 Bannir
+            </button>
+            <span *ngIf="user.isBanni" class="text-gray-500 text-sm">Déjà Banni</span>
+          </td>
+       
+        </tr>
+      </tbody>
+    </table>
+ <!-- Affiche le bouton s'il y a des signalements -->
+<button *ngIf="hasReports()" (click)="openReportsModal()">Voir les signalements</button>
+
+<!-- Affiche un message sinon -->
+<span *ngIf="!hasReports()">Aucun signalement</span>
+
+<!-- Affichage des signalements dans une modale -->
+<div *ngIf="signalements.length > 0 && isModalOpen" class="modal">
+  <div class="modal-content">
+    <h2>Signalements pour cet utilisateur</h2>
+    <ul>
+      <li *ngFor="let signalement of signalements">
+        <p><strong>Raison :</strong> {{ signalement.raison }}</p>
+        <p><strong>Commentaire :</strong> {{ signalement.commentaire }}</p>
+      </li>
+    </ul>
+    <button (click)="closeModal()">Fermer</button>
+  </div>
+</div>
+
+      
+   
+      
+  </div>
+  
