@@ -63,7 +63,8 @@
 
     <ul class="space-y-4 max-h-[300px] overflow-y-auto">
       <li *ngFor="let report of selectedReports" class="border-b pb-2">
-        <p><strong>Commentaire signalé :</strong> {{ report.reviewContent  }}</p>
+        <p><strong>Commentaire signalé :</strong></p>
+        <p *ngIf="report.reviewContent">{{ report.reviewContent }}</p>
         <p><strong>Raison :</strong> {{ report.reason }}</p>
       </li>
     </ul>

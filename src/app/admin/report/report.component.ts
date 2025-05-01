@@ -100,7 +100,7 @@ selectedUser: any | null = null;
     const reviewRequests = reports.map((report) =>
       this.reportService.getReviewById(report.reviewId)
     );
-  
+   
     forkJoin(reviewRequests).subscribe({
       next: (reviews) => {
         this.selectedReports = reports.map((report, index) => ({

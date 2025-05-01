@@ -1,6 +1,7 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, ViewChild } from '@angular/core';
 import { List, ListServices } from '../../services/list.service';
 import { ToastrService } from 'ngx-toastr';
+import { CreateListComponent } from '../create-list/create-list.component';
 
 @Component({
   selector: 'app-add-to-lists',
@@ -8,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './add-to-lists.component.css'
 })
 export class AddToListsComponent {
+  @ViewChild('createListModal') createListComponent!: CreateListComponent;
 
   @Output() placeRemoved = new EventEmitter<string>();
 
@@ -109,4 +111,12 @@ export class AddToListsComponent {
         this.toastr.error('Erreur lors de l\'enregistrement des modifications.');
       });
   }
+
+  onListCreated(newList: any) {
+    this.lists.push(newList); // Ajoute la liste à ton tableau
+    this.selectedLists.push(newList.id); // Sélectionne la nouvelle liste directement
+    this.toastr.success('Nouvelle liste ajoutée et sélectionnée.');
+  }
+  
+
 }

@@ -42,8 +42,8 @@ export class ReportService {
   getAllReports(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}`);
   }
-  getReviewById(reviewId: string): Observable<any> {
-    return this.http.get(`http://localhost:5066/reviews/${reviewId}`);
+  getReviewById(id: string): Observable<any> {
+    return this.http.get(`http://localhost:5066/reviews/${id}`);
   }
   
 }

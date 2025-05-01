@@ -21,6 +21,16 @@
           ✕
         </button>
       </div>
+<!-- AJOUT NOUVELLE LISTE -->
+<button
+  type="button"
+  (click)="createListComponent.openModal()"
+  class="w-full text-left text-indigo-600 mt-2 text-sm font-medium hover:underline hover:text-indigo-800 transition"
+>
+  ＋ Créer une nouvelle liste
+</button>
+<app-create-list (listCreated)="onListCreated($event)" #createListModal></app-create-list>
+
 
       <!-- BODY -->
       <div class="px-6 py-2 space-y-3 max-h-64 overflow-auto">
