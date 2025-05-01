@@ -39,4 +39,11 @@ export class ReportService {
       return throwError('Erreur lors du chargement des signalements.');
     }
   }
+  getAllReports(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}`);
+  }
+  getReviewById(reviewId: string): Observable<any> {
+    return this.http.get(`http://localhost:5066/reviews/${reviewId}`);
+  }
+  
 }

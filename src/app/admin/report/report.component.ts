@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user/user.model';
 import { ReportService } from '../../services/report.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-report',
@@ -16,35 +17,46 @@ export class ReportComponent {
   selectedUserReports: any[] = [];
   isModalOpen = false;
   reportedUsers: any[] = [];
+  allReports: any[] = [];
+  selectedReports: any[] | null = null;
+selectedUser: any | null = null;
 
   constructor(private userService: UserService , private reportService: ReportService) {}
 
   ngOnInit() {
-    this.loadUsers();
     this.loadSignalements();
     this.loadReportedUsers();
 
 
   }
 
-  loadUsers() {
-    this.userService.getAllUser().subscribe(users => {
-      this.users = users.map(u => ({
-        ...u,
-        hasReports: true // ou appel rapide si besoin de pré-checker
-      }));
-    });
-  }
-  loadReportedUsers(): void {
-    this.reportService.getReportedUsers().subscribe({
-      next: (users) => {
-        this.reportedUsers = users;
+
+  loadReportedUsers() {
+    this.reportService.getAllReports().subscribe({
+      next: (reports) => {
+        this.allReports = reports;
+
+        const uniqueUserIds = [
+          ...new Set(reports.map((r: any) => r.reportedUserId)),
+        ];
+
+        this.userService.getAllUsers().subscribe((users) => {
+          this.reportedUsers = users.filter((user: any) =>
+            uniqueUserIds.includes(user.id)
+          );
+        });
       },
       error: (err) => {
-        console.error('Erreur lors du chargement des utilisateurs signalés', err);
-      }
+        console.error('Erreur lors du chargement des signalements', err);
+      },
     });
   }
+
+  hasReportsForUser(userId: string): boolean {
+    return this.allReports.some((r) => r.reportedUserId === userId);
+  }
+
+
 
   banUser(userId: string) {
     const dateFin = new Date();
@@ -55,7 +67,7 @@ export class ReportComponent {
     this.userService.banUser(userId, dateFinISO).subscribe({
       next: () => {
         alert('Utilisateur banni avec succès !');
-        this.loadUsers();
+        this.loadReportedUsers();
       },
       error: (error) => {
         console.error('Erreur lors du bannissement :', error);
@@ -80,17 +92,38 @@ export class ReportComponent {
   }
 
   
-  hasReports(): boolean {
-    return this.signalements.length > 0;
+  openReportsModal(userId: string) {
+    this.selectedUser = this.reportedUsers.find((u) => u.id === userId);
+  
+    const reports = this.allReports.filter((r) => r.reportedUserId === userId);
+  
+    const reviewRequests = reports.map((report) =>
+      this.reportService.getReviewById(report.reviewId)
+    );
+  
+    forkJoin(reviewRequests).subscribe({
+      next: (reviews) => {
+        this.selectedReports = reports.map((report, index) => ({
+          ...report,
+          reviewContent: reviews[index]?.commentaire ,
+        }));
+        this.isModalOpen = true;
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération des avis signalés', err);
+        this.selectedReports = reports.map((report) => ({
+          ...report,
+          reviewContent: 'Erreur de chargement du contenu',
+        }));
+        this.isModalOpen = true;
+      }})}
+    
+  
+  closeModal() {
+    this.selectedReports = null;
+    this.selectedUser = null;
   }
 
-  openReportsModal(): void {
-    this.isModalOpen = true;
-  }
-
-  closeModal(): void {
-    this.isModalOpen = false;
   }
 
   
-}
