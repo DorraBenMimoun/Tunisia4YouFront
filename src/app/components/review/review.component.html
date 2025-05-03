@@ -1,122 +1,160 @@
-<div class="p-6 bg-white rounded-2xl shadow-md max-w-lg mx-auto mt-8">
-  <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Laisser un commentaire</h2>
+<div class="p-8 bg-white rounded-3xl shadow-lg max-w-lg mx-auto mt-12">
+  <h2 class="text-3xl font-semibold text-gray-900 mb-8 text-center">
+    Laisser un commentaire
+  </h2>
 
   <form (ngSubmit)="submitReview()" class="space-y-6">
+    <!-- Commentaire -->
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2" for="commentaire">Commentaire</label>
-      <textarea 
+      <label
+        class="block text-sm font-medium text-gray-700 mb-2"
+        for="commentaire"
+        >Commentaire</label
+      >
+      <textarea
         id="commentaire"
         [(ngModel)]="commentaire"
         name="commentaire"
-        rows="4"
-        placeholder="Votre commentaire..."
-        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+        rows="5"
+        placeholder="Exprimez-vous..."
+        class="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition ease-in-out"
         required
       ></textarea>
     </div>
 
+    <!-- Note -->
     <div>
       <label class="block text-sm font-medium text-gray-700 mb-2">Note</label>
-      <div class="flex space-x-2">
-        <ng-container *ngFor="let star of [1,2,3,4,5]">
-          <button 
-            type="button" 
+      <div class="flex justify-center space-x-2">
+        <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+          <button
+            type="button"
             (click)="note = star"
+            (mouseenter)="setHoveredNote(star)"
+            (mouseleave)="clearHoveredNote()"
             class="text-3xl focus:outline-none transition transform hover:scale-125"
           >
-            <span [ngClass]="star <= note ? 'text-yellow-400' : 'text-gray-300'">⭐</span>
+            <span
+              [ngClass]="
+                hoveredNote >= star || (!hoveredNote && note >= star)
+                  ? 'text-yellow-500'
+                  : 'text-gray-400'
+              "
+            >
+              <i class="fa fa-star"></i>
+            </span>
           </button>
         </ng-container>
       </div>
     </div>
 
-    <button 
+    <button
       type="submit"
-      class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-lg shadow-md transition transform hover:-translate-y-0.5"
+      class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl shadow-lg transition transform hover:scale-105"
     >
       Envoyer votre avis
     </button>
   </form>
 
-  <!-- Partie récupération des anciens commentaires -->
-  <div class="mt-10 space-y-6">
-    <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Avis existants</h3>
+  <!-- Section des commentaires -->
+  <div class="mt-12 space-y-6">
+    <h3 class="text-xl font-bold text-gray-800 mb-6 text-center">
+      Avis existants
+    </h3>
 
-    <div *ngFor="let review of reviews" class="flex space-x-4 p-4 bg-gray-50 rounded-lg shadow-md items-start relative">
-      <img 
-        [src]="review.userAvatar || 'https://ui-avatars.com/api/?name=' + (review.userName || 'User')"
-        alt="Avatar"
-        class="w-12 h-12 rounded-full object-cover"
-      >
-    
+    <div
+      *ngFor="let review of reviews"
+      class="flex space-x-4 p-5 bg-gray-50 rounded-xl shadow-md items-start relative"
+    >
       <div class="flex-1">
-        <div class="flex justify-between items-center mb-2">
-          <p class="font-semibold text-gray-800">
-            {{ review.userName }}
-          </p>
-          <div class="flex items-center space-x-2">
-            <p class="text-sm text-gray-500">
-              {{ review.createdAt | date: 'dd MMMM yyyy' }}
-            </p>
+        <div class="flex justify-between items-center mb-3">
+          <div class="flex items-center space-x-3">
+            <img
+              [src]="
+                review.userAvatar ||
+                'https://ui-avatars.com/api/?name=' +
+                  (review.username || 'Utilisateur')
+              "
+              alt="Avatar"
+              class="w-14 h-14 rounded-full object-cover"
+            />
+            <p class="font-semibold text-gray-800">{{ review.username }}</p>
           </div>
+
+          <p class="text-sm text-gray-500">
+            {{ review.createdAt | date : "dd MMM yyyy" }}
+          </p>
         </div>
-        
-        <p class="text-gray-700 mb-2">{{ review.commentaire }}</p>
-    
-        <div class="flex items-center space-x-1">
+
+        <p class="text-gray-700 mb-3">{{ review.commentaire }}</p>
+
+        <div class="flex items-center space-x-2">
           <ng-container *ngFor="let star of [].constructor(review.note)">
             <span class="text-2xl text-yellow-400">⭐</span>
           </ng-container>
         </div>
       </div>
 
-      <!-- Bouton Supprimer -->
-      <button 
-        (click)="deleteReview(review.id)" 
-        class="text-red-500 hover:text-red-700 text-sm font-semibold absolute bottom-0 right-0 m-2"
-      >
-        🗑️
-      </button>
-      <button 
-      (click)="openReportModal(review.id, review.userId)"
-      class="text-red-500 hover:text-red-700 text-sm font-semibold absolute bottom-0 right-5 m-2"
-    >
-    👎
-    </button>
+      <!-- Actions de suppression et signalement -->
+      <div class="absolute bottom-0 right-0 m-3 flex space-x-2">
+        <button
+          (click)="deleteReview(review.id)"
+          class="text-red-500 hover:text-red-700 text-sm font-semibold"
+        >
+          🗑️
+        </button>
+        <button
+          (click)="openReportModal(review.id, review.userId)"
+          class="text-red-500 hover:text-red-700 text-sm font-semibold"
+        >
+          👎
+        </button>
+      </div>
+    </div>
   </div>
-</div>
 
-<!-- Fenêtre modale pour signaler un commentaire -->
-<div *ngIf="isModalOpen" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
-  <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-    <h3 class="text-lg font-semibold mb-4">Signaler un commentaire</h3>
-    <form (ngSubmit)="submitReport()">
-      <div class="mb-4">
-        <label for="reason" class="block text-sm font-medium text-gray-700">Raison du signalement</label>
-        <select id="reason" [(ngModel)]="reason" name="reason" class="w-full p-2 border border-gray-300 rounded-lg">
-          <option value="Inappropriate content">Contenu inapproprié</option>
-          <option value="Spam">Spam</option>
-          <option value="Harassment">Harcèlement</option>
-          <!-- Ajoutez d'autres options si nécessaire -->
-        </select>
-      </div>
-      
-      <div class="flex justify-end space-x-2">
-        <button 
-          type="button"
-          (click)="closeReportModal()"
-          class="text-gray-500 hover:text-gray-700 text-sm font-semibold"
-        >
-          Annuler
-        </button>
-        <button 
-          type="submit"
-          class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg"
-        >
-          Soumettre le signalement
-        </button>
-      </div>
-    </form>
+  <!-- Modale de signalement -->
+  <div
+    *ngIf="isModalOpen"
+    class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50"
+  >
+    <div class="bg-white p-6 rounded-lg shadow-xl w-96">
+      <h3 class="text-lg font-semibold mb-4 text-gray-800">
+        Signaler un commentaire
+      </h3>
+      <form (ngSubmit)="submitReport()">
+        <div class="mb-6">
+          <label for="reason" class="block text-sm font-medium text-gray-700"
+            >Raison du signalement</label
+          >
+          <select
+            id="reason"
+            [(ngModel)]="reason"
+            name="reason"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+          >
+            <option value="Inappropriate content">Contenu inapproprié</option>
+            <option value="Spam">Spam</option>
+            <option value="Harassment">Harcèlement</option>
+          </select>
+        </div>
+
+        <div class="flex justify-end space-x-3">
+          <button
+            type="button"
+            (click)="closeReportModal()"
+            class="text-gray-600 hover:text-gray-800 text-sm font-semibold"
+          >
+            Annuler
+          </button>
+          <button
+            type="submit"
+            class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg"
+          >
+            Soumettre le signalement
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

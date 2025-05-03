@@ -7,6 +7,7 @@ export interface Review {
   note: number;
   userId: string;
   placeId: string;
+  username?: string; 
 }
 @Injectable({
   providedIn: 'root'

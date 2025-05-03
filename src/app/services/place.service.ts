@@ -11,6 +11,7 @@ export interface Place {
   description: string;
   address: string;
   city:string;
+  mapUrl: string;
   latitude: number;
   longitude: number;
   phoneNumber: string;
@@ -45,6 +46,7 @@ export class PlaceService {
     formData.append('Description', place.description);
     formData.append('Address', place.address);
     formData.append('City', place.city);
+    formData.append('MapUrl', place.mapUrl);
     formData.append('Latitude', place.latitude.toString());
     formData.append('Longitude', place.longitude.toString());
     formData.append('PhoneNumber', place.phoneNumber);
@@ -96,6 +98,7 @@ export class PlaceService {
     if (place.latitude !== undefined) formData.append('Latitude', place.latitude.toString());
     if (place.longitude !== undefined) formData.append('Longitude', place.longitude.toString());
     if (place.phoneNumber) formData.append('PhoneNumber', place.phoneNumber);
+    if(place.mapUrl) formData.append('MapUrl', place.mapUrl);
   
     // Tags
     place.tags?.forEach(tag => {
@@ -111,13 +114,16 @@ export class PlaceService {
       }
     }
   
-    // Images (base64 to blob)
     if (place.images) {
-      place.images.forEach((base64Image, index) => {
-        const blob = this.base64ToBlob(base64Image);
-        formData.append('Images', blob, `image${index}.png`);
+      place.images.forEach((image, index) => {
+        // Ne traite que les images encodées en base64
+        if (image.startsWith('data:image')) {
+          const blob = this.base64ToBlob(image);
+          formData.append('Images', blob, `image${index}.png`);
+        }
       });
     }
+    
   
     return this.http.put(`${this.apiUrl}/${id}`, formData);
   }

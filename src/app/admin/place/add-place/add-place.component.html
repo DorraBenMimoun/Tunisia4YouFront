@@ -42,6 +42,26 @@
       placeholder="Adresse"
       class="form-control mt-2"
     />
+
+    <select
+      [(ngModel)]="newPlace.city"
+      class="form-select mt-2"
+      (change)="onCityChange($event)"
+    >
+      <option value="" disabled selected>Choisir une ville</option>
+      <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+    </select>
+
+    <label for="mapInput">Lien Google Maps (iframe complet ou lien)</label>
+    <textarea
+      id="mapInput"
+      rows="4"
+      [(ngModel)]="mapInputTemp"
+      (blur)="extractMapUrlFromIframe(mapInputTemp)"
+      placeholder="Collez ici le code iframe de Google Maps ou directement le lien"
+    >
+    </textarea>
+
     <input
       [(ngModel)]="newPlace.latitude"
       type="number"
