@@ -86,9 +86,42 @@ export class PlaceService {
   
 
   updatePlace(id: string, place: Place): Observable<any> {
-    console.log('Updating place with ID:', id, 'and data:', place);
-    return this.http.put(`${this.apiUrl}/${id}`, place);
+    const formData = new FormData();
+  
+    if (place.name) formData.append('Name', place.name);
+    if (place.category) formData.append('Category', place.category);
+    if (place.description) formData.append('Description', place.description);
+    if (place.address) formData.append('Address', place.address);
+    if (place.city) formData.append('City', place.city);
+    if (place.latitude !== undefined) formData.append('Latitude', place.latitude.toString());
+    if (place.longitude !== undefined) formData.append('Longitude', place.longitude.toString());
+    if (place.phoneNumber) formData.append('PhoneNumber', place.phoneNumber);
+  
+    // Tags
+    place.tags?.forEach(tag => {
+      formData.append('Tags', tag);
+    });
+  
+    // OpeningHours
+    if (place.openingHours) {
+      for (const day in place.openingHours) {
+        if (place.openingHours.hasOwnProperty(day)) {
+          formData.append(`OpeningHours[${day}]`, place.openingHours[day]);
+        }
+      }
+    }
+  
+    // Images (base64 to blob)
+    if (place.images) {
+      place.images.forEach((base64Image, index) => {
+        const blob = this.base64ToBlob(base64Image);
+        formData.append('Images', blob, `image${index}.png`);
+      });
+    }
+  
+    return this.http.put(`${this.apiUrl}/${id}`, formData);
   }
+  
 
   deletePlace(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);

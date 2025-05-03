@@ -53,7 +53,7 @@ export class ListPlaceComponent implements OnInit {
   }
 
   editPlace(id: string): void {
-    this.router.navigate(['/admin/place/edit', id]);
+    this.router.navigate(['/admin/places/edit', id]);
   }
 
   deletePlace(id: string): void {

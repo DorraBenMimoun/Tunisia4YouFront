@@ -62,6 +62,27 @@ export class UpdatePlaceComponent implements OnInit {
     });
   }
 
+  private convertImagesToBase64(): Promise<string[]> {
+    const promises: Promise<string>[] = this.images.controls.map(imageGroup => {
+      const file = imageGroup.get('file')?.value;
+      const preview = imageGroup.get('preview')?.value;
+  
+      // Si l'image est déjà un base64 ou une URL (non modifiée), on la garde telle quelle
+      if (!file && preview) return Promise.resolve(preview);
+  
+      return new Promise((resolve, reject) => {
+        if (!file) return resolve('');
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    });
+  
+    return Promise.all(promises);
+  }
+
+  
   buildForm(): void {
     this.updateForm = this.fb.group({
       name: [this.place.name, Validators.required],
@@ -208,16 +229,21 @@ export class UpdatePlaceComponent implements OnInit {
   
 
   onSubmit(): void {
-    console.log('Form submitted:', this.updateForm.value);
-      const updatedPlace = this.updateForm.value;
-      updatedPlace.images= ['https://example.com/image1.jpg', 'https://example.com/image2.jpg']; // Remplacez par vos images
+    console.log('Formulaire de mise à jour envoyé:', this.updateForm.value);
+    const updatedPlace = this.updateForm.value;
+  
+    this.convertImagesToBase64().then(base64Images => {
+      updatedPlace.images = base64Images;
+  
       this.placeService.updatePlace(this.placeId, updatedPlace).subscribe({
-        //next: () => this.router.navigate(['/admin/places']),
+        next: () => {
+          this.router.navigate(['/admin/places']);
+        },
         error: (error: HttpErrorResponse) => {
-          console.error('Erreur backend 🔥:', error.error.errors); // 👈👈 Ici
+          console.error('Erreur lors de la mise à jour 🔥:', error.error.errors);
         }
       });
-      
-    
+    });
   }
+  
 }
