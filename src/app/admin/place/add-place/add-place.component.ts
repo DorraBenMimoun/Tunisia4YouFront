@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 export class AddPlaceComponent implements OnInit {
   tagSearch: string = '';
   filteredTags: TagPlace[] = [];
+  mapInputTemp: string = '';
   categories: string[] = [
     'Restaurant',
     'Café',
@@ -34,6 +35,24 @@ export class AddPlaceComponent implements OnInit {
     'Centre commercial',
     'Mosquée',
     'Église'
+  ];
+
+  cities: string[] = [
+    'Tunis',
+    'Sfax',
+    'Sousse',
+    'Ariana',
+    'Nabeul',
+    'Bizerte',
+    'Kairouan',
+    'Gabès',
+    'Monastir',
+    'Mahdia',
+    'Kasserine',
+    'Tataouine',
+    'Jendouba',
+    'Gafsa',
+    'Medenine'
   ];
   
   filteredCategories: string[] = [];
@@ -77,6 +96,7 @@ export class AddPlaceComponent implements OnInit {
     city: '',
     latitude: 0,
     longitude: 0,
+    mapUrl: '',
     phoneNumber: '',
     openingHours: {},
     averageRating: 0,
@@ -142,6 +162,7 @@ export class AddPlaceComponent implements OnInit {
           description: '',
           address: '',
           city: '',
+          mapUrl: '',
           latitude: 0,
           longitude: 0,
           phoneNumber: '',
@@ -162,6 +183,18 @@ export class AddPlaceComponent implements OnInit {
       }
     });
   }
+
+  extractMapUrlFromIframe(input: string): void {
+    const match = input.match(/src="([^"]+)"/);
+    if (match && match[1]) {
+      this.newPlace.mapUrl = match[1];
+      this.toastr.success('Lien "src" bien récupéré et enregistré !', 'Succès');
+    } else {
+      this.newPlace.mapUrl = '';
+      this.toastr.error('Impossible de trouver le lien "src" dans le code collé.', 'Erreur');
+    }
+  }
+  
 
   filterTags(): void {
     const query = this.tagSearch.toLowerCase();
@@ -234,6 +267,10 @@ export class AddPlaceComponent implements OnInit {
     input.value = '';
   }
 
+  onCityChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.newPlace.city = input.value;
+  }
   removeImage(index: number): void {
     const currentImages = this.newPlace.images || [];
     currentImages.splice(index, 1);

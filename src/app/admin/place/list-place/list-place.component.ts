@@ -53,7 +53,7 @@ export class ListPlaceComponent implements OnInit {
   }
 
   editPlace(id: string): void {
-    this.router.navigate(['/admin/place/edit', id]);
+    this.router.navigate(['/admin/places/edit', id]);
   }
 
   deletePlace(id: string): void {
@@ -62,5 +62,12 @@ export class ListPlaceComponent implements OnInit {
         this.loadPlaces();
       });
     }
+  }
+
+  getFirstImage(place:Place): string {
+    if (place?.images?.length == 0) {
+      return 'https://community.softr.io/uploads/db9110/original/2X/7/74e6e7e382d0ff5d7773ca9a87e6f6f8817a68a6.jpeg';
+    }
+    return 'http://localhost:5066' + place.images[0];
   }
 }

@@ -4,6 +4,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PlaceService, Place } from '../../../services/place.service';
 import { TagPlace, TagService } from '../../../services/tag.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-update-place',
@@ -29,13 +30,19 @@ export class UpdatePlaceComponent implements OnInit {
   tags: TagPlace[] = [];
   tagForm!: FormGroup;
 
+  mapInputTemp: string = '';
+  private readonly BACKEND_URL = 'http://localhost:5066'; // ou l'URL de ton API
+
+
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private placeService: PlaceService,
     private router: Router,
     private tagService: TagService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private toastr: ToastrService
+    
   ) { }
 
   ngOnInit(): void {
@@ -62,25 +69,55 @@ export class UpdatePlaceComponent implements OnInit {
     });
   }
 
+  private convertImagesToBase64(): Promise<string[]> {
+    const promises = this.images.controls.map(imageGroup => {
+      const file = imageGroup.get('file')?.value;
+      const preview = imageGroup.get('preview')?.value;
+  
+      // Si l’image est déjà un lien (et pas modifiée), on l’exclut totalement
+      if (!file && preview && preview.startsWith(this.BACKEND_URL)) {
+        return Promise.resolve(null); // <- on renverra null pour cette image à exclure
+      }
+  
+      // Sinon, c’est une nouvelle image : on convertit
+      return new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    });
+  
+    return Promise.all(promises).then(results => {
+      // Filtrer les nulls et forcer le typage
+      return results.filter((img): img is string => img !== null);
+    });
+      }
+  
+  
   buildForm(): void {
     this.updateForm = this.fb.group({
       name: [this.place.name, Validators.required],
       category: [this.place.category, Validators.required],
       description: [this.place.description, Validators.required],
       address: [this.place.address, Validators.required],
+      mapUrl: [this.place.mapUrl, Validators.required],
+      mapInput: [this.place.mapUrl], // <- AJOUT ICI
       city: [this.place.city, Validators.required],
       latitude: [this.place.latitude, Validators.required],
       longitude: [this.place.longitude, Validators.required],
       phoneNumber: [this.place.phoneNumber, Validators.required],
       tags: [this.place.tags || []],
       images: this.fb.array(
-        (this.place.images || []).map(url =>
-          this.fb.group({
-            file: [null],              // Si jamais on veut uploader plus tard
-            preview: [url]             // Affiche l’image depuis l’URL de base
-          })
-        )
+        (this.place.images || []).map(imgPath => {
+          const fullUrl = imgPath.startsWith('http') ? imgPath : this.BACKEND_URL + imgPath;
+          return this.fb.group({
+            file: [null],
+            preview: [fullUrl]
+          });
+        })
       ),
+      
       
             openingHours: this.fb.group(
         Object.fromEntries(
@@ -91,6 +128,7 @@ export class UpdatePlaceComponent implements OnInit {
         )
       ),
     });
+
   }
 
   generateHours(): void {
@@ -206,18 +244,52 @@ export class UpdatePlaceComponent implements OnInit {
     }
   }
   
+  onMapInputBlur(): void {
+    const input = this.updateForm.get('mapInput')?.value || '';
+    this.extractMapUrlFromIframe(input);
+  }
+
+  extractMapUrlFromIframe(input: string): void {
+    const iframeMatch = input.match(/src="([^"]+)"/);
+    if (iframeMatch && iframeMatch[1]) {
+      this.updateForm.get('mapUrl')?.setValue(iframeMatch[1]);
+      this.toastr.success('Lien extrait depuis iframe.', 'Succès');
+      this.updateForm.get('mapInput')?.setValue(iframeMatch[1]); // Met à jour le champ mapInput avec l'URL extraite
+      return;
+    }
+  
+    const urlMatch = input.match(/https:\/\/www\.google\.com\/maps[^"]*/);
+    if (urlMatch && urlMatch[0]) {
+      this.updateForm.get('mapUrl')?.setValue(urlMatch[0]);
+      this.toastr.success('Lien Google Maps enregistré !', 'Succès');
+      return;
+    }
+  
+    this.updateForm.get('mapUrl')?.setValue('');
+    this.toastr.error('Aucun lien Google Maps valide détecté.', 'Erreur');
+  }
+  
+  
 
   onSubmit(): void {
-    console.log('Form submitted:', this.updateForm.value);
-      const updatedPlace = this.updateForm.value;
-      updatedPlace.images= ['https://example.com/image1.jpg', 'https://example.com/image2.jpg']; // Remplacez par vos images
+    console.log('Formulaire de mise à jour envoyé:', this.updateForm.value);
+    const updatedPlace = this.updateForm.value;
+  
+    this.convertImagesToBase64().then(base64Images => {
+      updatedPlace.images = base64Images;
+  
       this.placeService.updatePlace(this.placeId, updatedPlace).subscribe({
-        //next: () => this.router.navigate(['/admin/places']),
+        next: () => {
+          this.toastr.success('Lieu mis à jour avec succès !', 'Succès');
+          this.router.navigate(['/admin/places']);
+        },
         error: (error: HttpErrorResponse) => {
-          console.error('Erreur backend 🔥:', error.error.errors); // 👈👈 Ici
+          const msg = error.error?.message || 'Une erreur est survenue.';
+          this.toastr.error(msg, 'Erreur');
         }
       });
-      
-    
+    });
   }
+  
+  
 }

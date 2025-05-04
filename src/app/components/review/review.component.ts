@@ -11,6 +11,7 @@ import { ReportService } from '../../services/report.service';
   styleUrls: ['./review.component.css'] // Attention: c'est styleUrls avec un 's'
 })
 export class ReviewComponent implements OnInit {
+  hoveredNote: number = 0;
   commentaire: string = '';
   note: number = 0;
   userId: string = '';
@@ -30,6 +31,15 @@ export class ReviewComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private reportService: ReportService
   ) {}
+
+  setHoveredNote(note: number): void {
+    this.hoveredNote = note;
+  }
+  
+  clearHoveredNote(): void {
+    this.hoveredNote = 0;
+  }
+  
 
   ngOnInit(): void {
     console.log('Place ID:', this.placeId); // Vérifiez si l'ID du lieu est bien récupéré

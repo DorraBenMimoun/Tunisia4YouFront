@@ -36,6 +36,7 @@ import { AddToListsComponent } from './components/add-to-lists/add-to-lists.comp
 import { ViewListComponent } from './components/view-list/view-list.component';
 import { ReviewComponent } from './components/review/review.component';
 import { ReportComponent } from './admin/report/report.component';
+import { SafeUrlPipe } from './pipes/safe-url.pipe';
 
 
 
@@ -60,7 +61,8 @@ import { ReportComponent } from './admin/report/report.component';
     AddToListsComponent,
     ViewListComponent,
     ReviewComponent,
-    ReportComponent
+    ReportComponent,
+    SafeUrlPipe
   ],
   imports: [
     BrowserModule,

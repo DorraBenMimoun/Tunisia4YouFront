@@ -1,119 +1,199 @@
 <div class="update-place-container" *ngIf="isLoaded">
-    <h2>✏️ Modifier le lieu</h2>
-  
-    <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
-      <input formControlName="name" placeholder="Nom" class="form-control" />
-      <input formControlName="category" placeholder="Catégorie" class="form-control mt-2" />
-      <textarea formControlName="description" placeholder="Description" class="form-control mt-2"></textarea>
-      <input formControlName="address" placeholder="Adresse" class="form-control mt-2" />
-      <input formControlName="city" placeholder="Ville" class="form-control mt-2" />
-      <input formControlName="latitude" type="number" placeholder="Latitude" class="form-control mt-2" />
-      <input formControlName="longitude" type="number" placeholder="Longitude" class="form-control mt-2" />
-      <input formControlName="phoneNumber" placeholder="Téléphone" class="form-control mt-2" />
-  
-      
-<!-- Liste des horaires -->
-<div formGroupName="openingHours" class="mt-3">
-    <label>🕐 Horaires :</label>
-    <ul class="list-group mt-2">
-        <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let day of getOpeningDays()">
+  <h2>✏️ Modifier le lieu</h2>
+
+  <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+    <input formControlName="name" placeholder="Nom" class="form-control" />
+    <input
+      formControlName="category"
+      placeholder="Catégorie"
+      class="form-control mt-2"
+    />
+    <textarea
+      formControlName="description"
+      placeholder="Description"
+      class="form-control mt-2"
+    ></textarea>
+    <input
+      formControlName="address"
+      placeholder="Adresse"
+      class="form-control mt-2"
+    />
+    <input
+      formControlName="city"
+      placeholder="Ville"
+      class="form-control mt-2"
+    />
+
+    <label for="mapInput">Lien Google Maps (iframe complet ou lien)</label>
+    <textarea
+      id="mapInput"
+      rows="4"
+      class="form-control mt-2"
+      formControlName="mapInput"
+      (blur)="onMapInputBlur()"
+      placeholder="Collez ici le code iframe de Google Maps ou directement le lien"
+    ></textarea>
+
+    <input
+      formControlName="latitude"
+      type="number"
+      placeholder="Latitude"
+      class="form-control mt-2"
+    />
+    <input
+      formControlName="longitude"
+      type="number"
+      placeholder="Longitude"
+      class="form-control mt-2"
+    />
+    <input
+      formControlName="phoneNumber"
+      placeholder="Téléphone"
+      class="form-control mt-2"
+    />
+
+    <!-- Liste des horaires -->
+    <div formGroupName="openingHours" class="mt-3">
+      <label>🕐 Horaires :</label>
+      <ul class="list-group mt-2">
+        <li
+          class="list-group-item d-flex justify-content-between align-items-center"
+          *ngFor="let day of getOpeningDays()"
+        >
           {{ day }} : {{ place.openingHours[day] }}
-          <button class="btn btn-sm btn-danger" (click)="removeOpeningHour(day)">❌</button>
+          <button
+            class="btn btn-sm btn-danger"
+            (click)="removeOpeningHour(day)"
+          >
+            ❌
+          </button>
         </li>
       </ul>
-  </div>
-      <h5 class="mt-4">🕐 Ajouter des horaires d'ouverture</h5>
+    </div>
+    <h5 class="mt-4">🕐 Ajouter des horaires d'ouverture</h5>
 
-      <form [formGroup]="addHourForm" (ngSubmit)="addOpeningHour()" class="row g-2 align-items-center">
-        <!-- Jour -->
-        <div class="col-md-3">
-          <select class="form-select" formControlName="day">
-            <option *ngFor="let day of days" [value]="day">{{ day }}</option>
-          </select>
-        </div>
-      
-        <!-- Heure de début -->
-        <div class="col-md-3">
-          <select class="form-select" formControlName="start">
-            <option *ngFor="let hour of hours" [value]="hour">{{ hour }}</option>
-          </select>
-        </div>
-      
-        <!-- Heure de fin -->
-        <div class="col-md-3">
-          <select class="form-select" formControlName="end">
-            <option *ngFor="let hour of hours" [value]="hour">{{ hour }}</option>
-          </select>
-        </div>
-      
-        <!-- Bouton ajouter -->
-        <div class="col-md-3">
-          <button type="submit" class="btn btn-outline-primary w-100" (click)="addOpeningHour()">Ajouter</button>
-        </div>
-      </form>
-      
-   
-
-      
-      <div class="mt-3" *ngIf="selectedTags.length > 0">
-        <strong>Tags sélectionnés :</strong>
-        <div class="d-flex flex-wrap gap-2 mt-2">
-          <span
-            *ngFor="let tag of selectedTags"
-            class="badge bg-primary p-2"
-            style="cursor: pointer"
-          >
-            {{ tag }}
-            <span class="ms-1" (click)="removeTag(tag)">❌</span>
-          </span>
-        </div>
+    <form
+      [formGroup]="addHourForm"
+      (ngSubmit)="addOpeningHour()"
+      class="row g-2 align-items-center"
+    >
+      <!-- Jour -->
+      <div class="col-md-3">
+        <select class="form-select" formControlName="day">
+          <option *ngFor="let day of days" [value]="day">{{ day }}</option>
+        </select>
       </div>
-  
-      <h5 class="mt-3">🏷️ Rechercher un tag </h5>
-      <form [formGroup]="tagForm" class="position-relative">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Rechercher un tag..."
-          formControlName="tagSearch"
-          (input)="filterTags()"
-          autocomplete="off"
-        />
-      
-        <!-- Liste des suggestions -->
-        <ul *ngIf="filteredTags.length > 0" class="list-group position-absolute w-100 shadow-sm z-3" style="top: 100%; left: 0;">
-          <li
-            class="list-group-item list-group-item-action"
-            *ngFor="let tag of filteredTags"
-            (click)="addTag(tag.libelle)"
-          >
-            {{ tag.libelle }}
-          </li>
-        </ul>
-      </form>
-      <!-- 📷 Images existantes -->
-<!-- 🖼️ Images -->
-<div formArrayName="images" class="mt-4">
-    <label>🖼️ Images :</label>
-  
-    <!-- Images existantes ou ajoutées -->
-    <div *ngFor="let imgCtrl of images.controls; let i = index" [formGroupName]="i" class="mt-2">
-      <!-- Aperçu -->
-      <div class="d-flex align-items-center">
-        <img [src]="imgCtrl.get('preview')?.value" alt="Image preview" width="100" class="me-2" *ngIf="imgCtrl.get('preview')?.value">
-        
-        <!-- Input file -->
-        <input type="file" (change)="onFileSelected($event, i)" class="form-control" />
-        <button type="button" class="btn btn-danger ms-2" (click)="removeImage(i)">❌</button>
+
+      <!-- Heure de début -->
+      <div class="col-md-3">
+        <select class="form-select" formControlName="start">
+          <option *ngFor="let hour of hours" [value]="hour">{{ hour }}</option>
+        </select>
+      </div>
+
+      <!-- Heure de fin -->
+      <div class="col-md-3">
+        <select class="form-select" formControlName="end">
+          <option *ngFor="let hour of hours" [value]="hour">{{ hour }}</option>
+        </select>
+      </div>
+
+      <!-- Bouton ajouter -->
+      <div class="col-md-3">
+        <button
+          type="submit"
+          class="btn btn-outline-primary w-100"
+          (click)="addOpeningHour()"
+        >
+          Ajouter
+        </button>
+      </div>
+    </form>
+
+    <div class="mt-3" *ngIf="selectedTags.length > 0">
+      <strong>Tags sélectionnés :</strong>
+      <div class="d-flex flex-wrap gap-2 mt-2">
+        <span
+          *ngFor="let tag of selectedTags"
+          class="badge bg-primary p-2"
+          style="cursor: pointer"
+        >
+          {{ tag }}
+          <span class="ms-1" (click)="removeTag(tag)">❌</span>
+        </span>
       </div>
     </div>
-  
-    <!-- Ajouter une nouvelle image -->
-    <button type="button" class="btn btn-secondary mt-3" (click)="addImage()">Ajouter une image</button>
-  </div>
-  
-  
-      <!--<div class="mt-3">
+
+    <h5 class="mt-3">🏷️ Rechercher un tag</h5>
+    <form [formGroup]="tagForm" class="position-relative">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Rechercher un tag..."
+        formControlName="tagSearch"
+        (input)="filterTags()"
+        autocomplete="off"
+      />
+
+      <!-- Liste des suggestions -->
+      <ul
+        *ngIf="filteredTags.length > 0"
+        class="list-group position-absolute w-100 shadow-sm z-3"
+        style="top: 100%; left: 0"
+      >
+        <li
+          class="list-group-item list-group-item-action"
+          *ngFor="let tag of filteredTags"
+          (click)="addTag(tag.libelle)"
+        >
+          {{ tag.libelle }}
+        </li>
+      </ul>
+    </form>
+    <!-- 📷 Images existantes -->
+    <!-- 🖼️ Images -->
+    <div formArrayName="images" class="mt-4">
+      <label>🖼️ Images :</label>
+
+      <!-- Images existantes ou ajoutées -->
+      <div
+        *ngFor="let imgCtrl of images.controls; let i = index"
+        [formGroupName]="i"
+        class="mt-2"
+      >
+        <!-- Aperçu -->
+        <div class="d-flex align-items-center">
+          <img
+            [src]="imgCtrl.get('preview')?.value"
+            alt="Image preview"
+            width="100"
+            class="me-2"
+            *ngIf="imgCtrl.get('preview')?.value"
+          />
+
+          <!-- Input file -->
+          <input
+            type="file"
+            (change)="onFileSelected($event, i)"
+            class="form-control"
+          />
+          <button
+            type="button"
+            class="btn btn-danger ms-2"
+            (click)="removeImage(i)"
+          >
+            ❌
+          </button>
+        </div>
+      </div>
+
+      <!-- Ajouter une nouvelle image -->
+      <button type="button" class="btn btn-secondary mt-3" (click)="addImage()">
+        Ajouter une image
+      </button>
+    </div>
+
+    <!--<div class="mt-3">
         <label>🖼️ Images :</label>
         <div formArrayName="images" *ngFor="let imgCtrl of images.controls; let i = index">
           <div class="d-flex align-items-center mt-2">
@@ -123,8 +203,7 @@
         </div>
         <button type="button" class="btn btn-secondary mt-2" (click)="addImage()">Ajouter une image</button>
       </div>-->
-  
-      <button class="btn btn-primary mt-4" type="submit" >Mettre à jour</button>
-    </form>
-  </div>
-  
+
+    <button class="btn btn-primary mt-4" type="submit">Mettre à jour</button>
+  </form>
+</div>

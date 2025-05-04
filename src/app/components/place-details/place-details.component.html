@@ -89,14 +89,12 @@
           height="300"
           frameborder="0"
           style="border: 0"
-          [src]="
-            'https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=' +
-            place.latitude +
-            ',' +
-            place.longitude
-          "
+          [src]="place.mapUrl | safeUrl"
           allowfullscreen
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
         >
+          >
         </iframe>
       </div>
     </div>
@@ -105,4 +103,3 @@
 
 <app-add-to-lists />
 <app-review [placeId]="id"></app-review>
-

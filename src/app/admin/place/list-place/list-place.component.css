@@ -39,6 +39,12 @@
   .desc {
     margin: 0.5rem 0;
   }
+
+  .description{
+    font-size: 0.7rem;
+    color: #555;
+    
+  }
   
   .tags {
     margin: 0.5rem 0;
@@ -51,11 +57,28 @@
     margin-right: 4px;
     display: inline-block;
     font-size: 0.85rem;
+    color:white;
   }
   
   .opening-hours ul {
     padding-left: 1rem;
     margin: 0.5rem 0;
+  }
+
+  .averageRating{
+    font-size: 0.8rem;
+    color: #555;
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+    justify-content: space-between;
+    flex-direction: row;
+    border:none;
+  }
+
+  img {
+    height: auto;
+    min-width: 100px;
   }
   
   .place-actions {

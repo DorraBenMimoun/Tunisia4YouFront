@@ -11,6 +11,7 @@ export interface Place {
   description: string;
   address: string;
   city:string;
+  mapUrl: string;
   latitude: number;
   longitude: number;
   phoneNumber: string;
@@ -45,6 +46,7 @@ export class PlaceService {
     formData.append('Description', place.description);
     formData.append('Address', place.address);
     formData.append('City', place.city);
+    formData.append('MapUrl', place.mapUrl);
     formData.append('Latitude', place.latitude.toString());
     formData.append('Longitude', place.longitude.toString());
     formData.append('PhoneNumber', place.phoneNumber);
@@ -86,9 +88,46 @@ export class PlaceService {
   
 
   updatePlace(id: string, place: Place): Observable<any> {
-    console.log('Updating place with ID:', id, 'and data:', place);
-    return this.http.put(`${this.apiUrl}/${id}`, place);
+    const formData = new FormData();
+  
+    if (place.name) formData.append('Name', place.name);
+    if (place.category) formData.append('Category', place.category);
+    if (place.description) formData.append('Description', place.description);
+    if (place.address) formData.append('Address', place.address);
+    if (place.city) formData.append('City', place.city);
+    if (place.latitude !== undefined) formData.append('Latitude', place.latitude.toString());
+    if (place.longitude !== undefined) formData.append('Longitude', place.longitude.toString());
+    if (place.phoneNumber) formData.append('PhoneNumber', place.phoneNumber);
+    if(place.mapUrl) formData.append('MapUrl', place.mapUrl);
+  
+    // Tags
+    place.tags?.forEach(tag => {
+      formData.append('Tags', tag);
+    });
+  
+    // OpeningHours
+    if (place.openingHours) {
+      for (const day in place.openingHours) {
+        if (place.openingHours.hasOwnProperty(day)) {
+          formData.append(`OpeningHours[${day}]`, place.openingHours[day]);
+        }
+      }
+    }
+  
+    if (place.images) {
+      place.images.forEach((image, index) => {
+        // Ne traite que les images encodées en base64
+        if (image.startsWith('data:image')) {
+          const blob = this.base64ToBlob(image);
+          formData.append('Images', blob, `image${index}.png`);
+        }
+      });
+    }
+    
+  
+    return this.http.put(`${this.apiUrl}/${id}`, formData);
   }
+  
 
   deletePlace(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
