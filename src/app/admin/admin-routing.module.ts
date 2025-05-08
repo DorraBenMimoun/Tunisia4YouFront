@@ -17,6 +17,8 @@ const routes: Routes = [
   { path: 'tags', component: GestionTagComponent },
   { path: 'reports', component: ReportComponent },
 
+  { path: '**', redirectTo: '' }
+
 
 ];
 

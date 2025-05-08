@@ -1,0 +1,63 @@
+<header>
+    <div class="header-area">
+        <div id="sticky-header" class="main-header-area">
+            <div class="container-fluid">
+                <div class="header_bottom_border">
+                    <div class="row align-items-center">
+                        <!-- Logo -->
+                        <div class="col-lg-3">
+                            <div class="logo">
+                                <a href="index.html">
+                                    <img src="assets/assets2/img/logo.png" alt="Tunisia4You Logo" class="navbar-logo"
+                                        style="width: 200px; height: 50px" />
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Navigation Menu -->
+                        <div class="col-lg-9">
+                            <div class="main-menu d-none d-lg-block">
+                                <nav>
+                                    <ul id="navigation">
+                                        <li>
+                                            <a class="active" routerLink="admin/dashboard"><i class="fa fa-home"></i>
+                                                Dashboard</a>
+                                        </li>
+                                        <li>
+                                            <a routerLink="admin/users"><i class="fas fa-users"></i> Users</a>
+                                        </li>
+                                        <li>
+                                            <a routerLink="admin/tags"><i class="fas fa-tags"></i> Tags</a>
+
+                                        </li>
+
+                                        <li>
+
+                                            <a routerLink="admin/places"><i class="fas fa-compass"></i> Places</a>
+                                        </li>
+
+                                        <li>
+                                            <a routerLink="admin/reports"><i class="fa fa-heart"></i> Reports
+                                            </a>
+                                        </li>
+                                     
+
+                                        <li>
+                                            <a *ngIf="isLoggedIn" (click)="logout()"><i class="fas fa-sign-out-alt"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <!-- Mobile Menu -->
+
+                        <div class="col-12">
+                            <div class="mobile_menu d-block d-lg-none"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />

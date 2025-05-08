@@ -32,7 +32,14 @@ export class LoginComponent {
         const { token, user } = res;
         this.authService.saveToken(token, user.id, user.isAdmin.toString());
         this.toastr.success('Connexion réussie !');
-        this.router.navigate(['']);
+        this.authService.setUser(user); // Set the user in the auth service
+        if (user.isAdmin) {
+          this.router.navigate(['/admin/dashboard']);
+        }
+        else {
+          this.router.navigate(['/home']);
+        }
+
       },
       error: (err) => {
         const errorMsg = err.error?.message || 'Erreur inconnue lors de la connexion.';

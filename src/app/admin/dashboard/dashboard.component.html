@@ -1,1 +1,60 @@
-<p>dashboard works!</p>
+<div class="dashboard">
+    <h1 class="dashboard-title">📊 Tableau de Bord</h1>
+  
+    <!-- UTILISATEURS -->
+    <section class="dashboard-section">
+      <h2>👤 Utilisateurs</h2>
+      <div class="card-container">
+        <div class="card">👥 Total : <strong>{{ userStats?.totalUsers }}</strong></div>
+        <div class="card">📅 Cette semaine : <strong>{{ userStats?.newUsersThisWeek }}</strong></div>
+        <div class="card">📈 Ce mois : <strong>{{ userStats?.newUsersThisMonth }}</strong></div>
+        <div class="card danger">🚫 Bannis : <strong>{{ userStats?.bannedUsers }}</strong></div>
+      </div>
+    </section>
+  
+    <!-- LIEUX -->
+    <section class="dashboard-section">
+      <h2>📍 Lieux</h2>
+      <div class="card-container">
+        <div class="card">🏛️ Total lieux : <strong>{{ placeStats?.totalPlaces }}</strong></div>
+        <div class="card wide">
+          <h3>📂 Par catégorie</h3>
+          <ul>
+            <li *ngFor="let item of placeStats?.placesByCategory | keyvalue">
+              {{ item.key }} : {{ item.value }}
+            </li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>🌟 Top</h3>
+          <ul>
+            <li *ngFor="let place of placeStats?.topRatedPlaces">{{ place.name }} ({{ place.averageRating }})</li>
+          </ul>
+        </div>
+   
+      </div>
+    </section>
+  
+    <!-- AVIS -->
+    <section class="dashboard-section">
+      <h2>📝 Avis</h2>
+      <div class="card-container">
+        <div class="card">🗣️ Total : <strong>{{ reviewStats?.totalReviews }}</strong></div>
+        <div class="card">⭐ Moyenne : <strong>{{ reviewStats?.averageRating | number: '1.1-2' }}</strong></div>
+        <div class="card">🆕 Récents : <strong>{{ reviewStats?.recentReviewsCount }}</strong></div>
+        <div class="card danger">🚩 Signalés : <strong>{{ reviewStats?.reportedReviewsCount }}</strong></div>
+      </div>
+    </section>
+  
+    <!-- LISTES -->
+    <section class="dashboard-section">
+      <h2>📋 Listes</h2>
+      <div class="card-container">
+        <div class="card">📌 Total : <strong>{{ listStats?.totalListes }}</strong></div>
+        <div class="card">🔓 Publiques : <strong>{{ listStats?.pourcentagePubliques }}</strong></div>
+        <div class="card">🔒 Privées : <strong>{{ listStats?.pourcentagePrivees }}</strong></div>
+        <div class="card">📊 Moy. lieux/liste : <strong>{{ listStats?.moyenneLieuxParListe }}</strong></div>
+      </div>
+    </section>
+  </div>
+  
