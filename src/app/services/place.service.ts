@@ -12,8 +12,6 @@ export interface Place {
   address: string;
   city:string;
   mapUrl: string;
-  latitude: number;
-  longitude: number;
   phoneNumber: string;
   openingHours: { [key: string]: string };
   averageRating: number;
@@ -47,8 +45,7 @@ export class PlaceService {
     formData.append('Address', place.address);
     formData.append('City', place.city);
     formData.append('MapUrl', place.mapUrl);
-    formData.append('Latitude', place.latitude.toString());
-    formData.append('Longitude', place.longitude.toString());
+
     formData.append('PhoneNumber', place.phoneNumber);
   
     // Tags
@@ -95,8 +92,7 @@ export class PlaceService {
     if (place.description) formData.append('Description', place.description);
     if (place.address) formData.append('Address', place.address);
     if (place.city) formData.append('City', place.city);
-    if (place.latitude !== undefined) formData.append('Latitude', place.latitude.toString());
-    if (place.longitude !== undefined) formData.append('Longitude', place.longitude.toString());
+
     if (place.phoneNumber) formData.append('PhoneNumber', place.phoneNumber);
     if(place.mapUrl) formData.append('MapUrl', place.mapUrl);
   

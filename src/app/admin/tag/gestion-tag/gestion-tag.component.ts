@@ -7,21 +7,30 @@ import { TagPlace, TagService } from '../../../services/tag.service';
   styleUrl: './gestion-tag.component.css'
 })
 export class GestionTagComponent implements OnInit {
-  tags: TagPlace[] = [];
+  tags: any[] = []; // Tous les tags
+  filteredTags: any[] = []; // Liste à afficher dynamiquement
   newTag: string = '';
   editTagId: string | null = null;
   editTagLibelle: string = '';
+  tagExists: boolean = false;
 
   constructor(private tagService: TagService) {}
 
   ngOnInit(): void {
     this.loadTags();
   }
+  checkSimilarTags(): void {
+    const input = this.newTag.trim().toLowerCase();
+    this.tagExists = this.tags.some(tag => tag.libelle.toLowerCase() === input);
+  }
   loadTags(): void {
     this.tagService.getAllTags().subscribe({
       next: (response) => {
         console.log('Tags récupérés :', response);
+
         this.tags = response.data; // Assignez uniquement la propriété `data` qui contient le tableau des tags
+        this.filteredTags = response.data; // Affiche tout au début
+
       },
       error: (err) => {
         console.error('Erreur lors du chargement des tags :', err);
@@ -29,13 +38,30 @@ export class GestionTagComponent implements OnInit {
       }
     });
   }
+
+  filterTags(): void {
+    const input = this.newTag.trim().toLowerCase();
+  
+    this.filteredTags = this.tags.filter(tag =>
+      tag.libelle.toLowerCase().includes(input)
+    );
+  
+    this.tagExists = this.tags.some(tag =>
+      tag.libelle.toLowerCase() === input
+    );
+  }
+
   addTag(): void {
-    if (!this.newTag.trim()) return;
-    const tag: TagPlace = { id: '', libelle: this.newTag };
-    this.tagService.createTag(tag).subscribe(() => {
-      this.newTag = '';
-      this.loadTags();
-    });
+    const trimmed = this.newTag.trim();
+    if (!this.tagExists && trimmed) {
+      const newTagObj =  { id: '', libelle: this.newTag };
+      this.tagService.createTag(newTagObj).subscribe(created => {
+        this.tags.push(created);
+        this.filteredTags = this.tags;
+        this.newTag = '';
+        this.tagExists = false;
+      });
+    }
   }
 
   editTag(tag: TagPlace): void {

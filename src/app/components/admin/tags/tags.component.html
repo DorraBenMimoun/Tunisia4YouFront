@@ -1,37 +1,39 @@
 <div class="tags-container">
   <h2>🌟 Gestion des #Tags</h2>
 
-  <!-- Ajouter un nouveau tag -->
+  <!-- Formulaire d'ajout -->
   <div class="form-group add-tag-form">
     <input
       type="text"
       [(ngModel)]="newTag"
+      (keyup)="filterTags()"
       placeholder="#AjouteTonTag"
       class="form-control"
     />
-    <button (click)="addTag()" class="btn-add">➕ </button>
+    <button (click)="addTag()" class="btn-add" [disabled]="tagExists">➕</button>
+    <div *ngIf="tagExists" class="tag-warning">⚠️ Ce tag existe déjà !</div>
   </div>
 
-  <!-- Liste des tags affichés -->
-  <div class="tags-list">
-    <div
+  <!-- Liste filtrée et scrollable -->
+  <div class="tags-list scrollable-tags">
+    <div 
       class="tag-item animate-in"
-      *ngFor="let tag of tags; let i = index"
+      *ngFor="let tag of filteredTags"
       [class.editing]="editTagId === tag.id"
     >
       <ng-container *ngIf="editTagId !== tag.id">
         <span class="hashtag">#{{ tag.libelle }}</span>
         <div class="actions">
-          <button (click)="editTag(tag)" class="btn edit" title="Modifier">✏️</button>
-          <button (click)="deleteTag(tag.id)" class="btn delete" title="Supprimer">🗑️</button>
+          <button (click)="editTag(tag)" class="btn edit">✏️</button>
+          <button (click)="deleteTag(tag.id)" class="btn delete">🗑️</button>
         </div>
       </ng-container>
 
       <ng-container *ngIf="editTagId === tag.id">
         <input [(ngModel)]="editTagLibelle" class="form-control edit-input" />
         <div class="actions">
-          <button (click)="updateTag()" class="btn save" title="Enregistrer">💾</button>
-          <button (click)="editTagId = null" class="btn cancel" title="Annuler">❌</button>
+          <button (click)="updateTag()" class="btn save">💾</button>
+          <button (click)="editTagId = null" class="btn cancel">❌</button>
         </div>
       </ng-container>
     </div>

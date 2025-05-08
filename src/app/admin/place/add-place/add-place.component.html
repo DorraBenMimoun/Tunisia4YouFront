@@ -8,30 +8,15 @@
       placeholder="Nom de la place"
       class="form-control"
     />
-    <input
-      type="text"
-      [(ngModel)]="newPlace.category"
-      (input)="filterCategories()"
-      (focus)="showCategoryDropdown = true"
-      (blur)="hideDropdownWithDelay()"
-      placeholder="Catégorie"
-      class="form-control mt-2"
-    />
-
-    <ul
-      *ngIf="showCategoryDropdown && filteredCategories.length"
-      class="list-group position-absolute -z-20 w-100"
-    >
-      <li
-        *ngFor="let category of filteredCategories"
-        (mousedown)="selectCategory(category)"
-        class="list-group-item list-group-item-action"
-        style="cursor: pointer"
-      >
-        {{ category }}
-      </li>
-    </ul>
-
+    <select
+    [(ngModel)]="newPlace.category"
+    class="form-select mt-2"
+  >
+    <option value="" disabled selected>Choisir une catégorie</option>
+    <option *ngFor="let category of categories" [value]="category">
+      {{ category }}
+    </option>
+  </select>
     <textarea
       [(ngModel)]="newPlace.description"
       placeholder="Description"
@@ -62,18 +47,6 @@
     >
     </textarea>
 
-    <input
-      [(ngModel)]="newPlace.latitude"
-      type="number"
-      placeholder="Latitude"
-      class="form-control mt-2"
-    />
-    <input
-      [(ngModel)]="newPlace.longitude"
-      type="number"
-      placeholder="Longitude"
-      class="form-control mt-2"
-    />
     <input
       [(ngModel)]="newPlace.phoneNumber"
       placeholder="Numéro de téléphone"

@@ -104,8 +104,6 @@ export class UpdatePlaceComponent implements OnInit {
       mapUrl: [this.place.mapUrl, Validators.required],
       mapInput: [this.place.mapUrl], // <- AJOUT ICI
       city: [this.place.city, Validators.required],
-      latitude: [this.place.latitude, Validators.required],
-      longitude: [this.place.longitude, Validators.required],
       phoneNumber: [this.place.phoneNumber, Validators.required],
       tags: [this.place.tags || []],
       images: this.fb.array(
