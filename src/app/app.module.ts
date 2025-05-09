@@ -37,7 +37,6 @@ import { ViewListComponent } from './components/view-list/view-list.component';
 import { ReviewComponent } from './components/review/review.component';
 import { ReportComponent } from './admin/report/report.component';
 import { SafeUrlPipe } from './pipes/safe-url.pipe';
-import { AdminNavbarComponent } from './components/admin-navbar/admin-navbar.component';
 
 
 
@@ -64,7 +63,6 @@ import { AdminNavbarComponent } from './components/admin-navbar/admin-navbar.com
     ReviewComponent,
     ReportComponent,
     SafeUrlPipe,
-    AdminNavbarComponent,
   ],
   imports: [
     BrowserModule,

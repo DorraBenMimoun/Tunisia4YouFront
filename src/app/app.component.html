@@ -1,13 +1,10 @@
 <!-- Navbar -->
-<app-admin-navbar *ngIf="authService.isAdmin(); else userNavbar"></app-admin-navbar>
-<ng-template #userNavbar>
-  <app-navbar></app-navbar>
-</ng-template>
+
+<app-navbar></app-navbar>
 
 <!-- Contenu principal -->
 <router-outlet></router-outlet>
 
 <!-- Footer -->
-<ng-template #userNavbar>
-  <app-footer></app-footer>
-</ng-template>
+
+<app-footer></app-footer>

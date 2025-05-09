@@ -21,7 +21,7 @@
             <div class="col-lg-9">
               <div class="main-menu d-none d-lg-block">
                 <nav>
-                  <ul id="navigation">
+                  <ul id="navigation" *ngIf="!isAdmin">
                     <li>
                       <a class="active" routerLink=""
                         ><i class="fa fa-home"></i> Home</a
@@ -32,7 +32,7 @@
                         ><i class="fas fa-compass"></i> Explore</a
                       >
                     </li>
-                 
+
                     <li>
                       <a routerLink="lists"
                         ><i class="fa fa-heart"></i> Listes
@@ -44,39 +44,47 @@
                       >
                     </li>
 
-                    <li *ngIf="isAdmin" class="dropdown">
-                      <a href="#"
-                        ><i class="fas fa-tools"></i> Dashboard
-                        <i class="fas fa-caret-down"></i
-                      ></a>
-                      <ul class="dropdown-menu">
-                        <li>
-                          <a href="admin/users"
-                            ><i class="fas fa-user-cog"></i> Users</a
-                          >
-                        </li>
-                        <li>
-                          <a href="admin/tags"
-                            ><i class="fas fa-tags"></i> Tags</a
-                          >
-                        </li>
-                        <li>
-                          <a href="admin/places"
-                            ><i class="fas fa-map-marker-alt"></i> Places</a
-                          >
-                        </li>
-                        <li>
-                          <a href="admin/reports"
-                            ><i class="fas fa-exclamation-triangle"></i>Reports</a
-                          >
-                        </li>
-                      </ul>
-                    </li>
                     <li>
                       <a *ngIf="isLoggedIn" routerLink="profile"
                         ><i class="fas fa-user"></i>
                       </a>
                     </li>
+                    <li>
+                      <a *ngIf="isLoggedIn" (click)="logout()"
+                        ><i class="fas fa-sign-out-alt"></i>
+                      </a>
+                    </li>
+                  </ul>
+
+                  <ul id="navigation" *ngIf="isAdmin">
+                    <li>
+                      <a class="active" routerLink="admin/dashboard"
+                        ><i class="fa fa-home"></i> Dashboard</a
+                      >
+                    </li>
+                    <li>
+                      <a routerLink="admin/users"
+                        ><i class="fas fa-users"></i> Users</a
+                      >
+                    </li>
+                    <li>
+                      <a routerLink="admin/tags"
+                        ><i class="fas fa-tags"></i> Tags</a
+                      >
+                    </li>
+
+                    <li>
+                      <a routerLink="admin/places"
+                        ><i class="fas fa-compass"></i> Places</a
+                      >
+                    </li>
+
+                    <li>
+                      <a routerLink="admin/reports"
+                        ><i class="fa fa-heart"></i> Reports
+                      </a>
+                    </li>
+
                     <li>
                       <a *ngIf="isLoggedIn" (click)="logout()"
                         ><i class="fas fa-sign-out-alt"></i>
