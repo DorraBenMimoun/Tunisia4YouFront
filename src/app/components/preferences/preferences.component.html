@@ -1,0 +1,222 @@
+<div class="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+  <div class="w-full max-w-3xl bg-white rounded-2xl shadow-xl p-8">
+    <!-- Indicateur de chargement -->
+    <div *ngIf="loading" class="flex justify-center items-center py-8">
+      <div
+        class="animate-spin h-8 w-8 border-4 border-indigo-500 border-t-transparent rounded-full"
+      ></div>
+      <span class="ml-3 text-gray-600">Chargement de vos préférences...</span>
+    </div>
+
+    <!-- Contenu du formulaire -->
+    <div *ngIf="!loading">
+      <h2 class="text-3xl font-bold text-gray-800 mb-2">
+        🎯 Personnalisez vos recommandations
+      </h2>
+      <p class="text-gray-500 mb-6 text-sm">
+        Aidez-nous à mieux vous connaître pour vous suggérer les lieux parfaits
+        ✨
+      </p>
+
+      <form
+        [formGroup]="preferencesForm"
+        (ngSubmit)="onSubmit()"
+        class="space-y-6"
+      >
+        <!-- Villes préférées -->
+        <div>
+          <label class="block text-base font-semibold text-gray-800 mb-2"
+            >📍 Où souhaitez-vous aller ?</label
+          >
+          <div class="flex flex-wrap gap-2">
+            <div *ngFor="let city of cities">
+              <input
+                type="checkbox"
+                [id]="'city-' + city"
+                [value]="city"
+                (change)="onToggle('preferredCities', city, $event)"
+                [checked]="f['preferredCities'].value.includes(city)"
+                class="hidden"
+              />
+              <label
+                [for]="'city-' + city"
+                class="cursor-pointer px-4 py-2 rounded-full border border-gray-300 text-sm transition hover:bg-green-100"
+                [class.bg-green-500]="f['preferredCities'].value.includes(city)"
+                [class.text-white]="f['preferredCities'].value.includes(city)"
+              >
+                {{ city }}
+              </label>
+            </div>
+          </div>
+          <p
+            *ngIf="submitted && f['preferredCities'].errors"
+            class="text-red-500 text-sm mt-1"
+          >
+            Veuillez sélectionner au moins une ville.
+          </p>
+        </div>
+
+        <!-- Catégories -->
+        <div>
+          <label class="block text-base font-semibold text-gray-800 mb-2"
+            >🏷️ Quels types de lieux vous intéressent ?</label
+          >
+          <div class="flex flex-wrap gap-2">
+            <div *ngFor="let category of availableCategories">
+              <input
+                type="checkbox"
+                [id]="'category-' + category"
+                [value]="category"
+                (change)="onToggle('preferredCategories', category, $event)"
+                [checked]="f['preferredCategories'].value.includes(category)"
+                class="hidden"
+              />
+              <label
+                [for]="'category-' + category"
+                class="cursor-pointer px-4 py-2 rounded-full border border-gray-300 text-sm transition hover:bg-purple-100"
+                [class.bg-purple-500]="
+                  f['preferredCategories'].value.includes(category)
+                "
+                [class.text-white]="
+                  f['preferredCategories'].value.includes(category)
+                "
+              >
+                {{ category }}
+              </label>
+            </div>
+          </div>
+          <p
+            *ngIf="submitted && f['preferredCategories'].errors"
+            class="text-red-500 text-sm mt-1"
+          >
+            Veuillez sélectionner au moins une catégorie.
+          </p>
+        </div>
+
+        <!-- Tags préférés -->
+        <div>
+          <label class="block text-base font-semibold text-gray-800 mb-2"
+            >✨ Vos préférences (ambiance, options...)</label
+          >
+          <div class="flex flex-wrap gap-2">
+            <div *ngFor="let tag of availableTags">
+              <input
+                type="checkbox"
+                [id]="'tag-' + tag.libelle"
+                [value]="tag.libelle"
+                (change)="onToggle('preferredTags', tag.libelle, $event)"
+                [checked]="f['preferredTags'].value.includes(tag.libelle)"
+                class="hidden"
+              />
+              <label
+                [for]="'tag-' + tag.libelle"
+                class="cursor-pointer px-4 py-2 rounded-full border border-gray-300 text-sm transition hover:bg-blue-100"
+                [class.bg-blue-500]="
+                  f['preferredTags'].value.includes(tag.libelle)
+                "
+                [class.text-white]="
+                  f['preferredTags'].value.includes(tag.libelle)
+                "
+              >
+                {{ tag.libelle }}
+              </label>
+            </div>
+          </div>
+          <p
+            *ngIf="submitted && f['preferredTags'].errors"
+            class="text-red-500 text-sm mt-1"
+          >
+            Veuillez sélectionner au moins un tag.
+          </p>
+        </div>
+
+        <!-- Note minimale -->
+        <div>
+          <label class="block text-base font-semibold text-gray-800 mb-2"
+            >⭐️ Niveau de qualité souhaité</label
+          >
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              formControlName="allowRisk"
+              class="form-checkbox"
+            />
+            <span class="text-sm text-gray-600"
+              >Je suis ouvert(e) à tout, même aux surprises 🎲</span
+            >
+          </label>
+
+          <div *ngIf="!f['allowRisk'].value" class="mt-3">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="flex">
+                <span
+                  *ngFor="let star of [1, 2, 3, 4, 5]"
+                  class="text-2xl cursor-pointer"
+                  [class.text-yellow-400]="f['minRating'].value >= star"
+                  [class.text-gray-300]="f['minRating'].value < star"
+                  (click)="f['minRating'].setValue(star)"
+                >
+                  ★
+                </span>
+              </div>
+              <span class="text-sm text-gray-600 ml-2"
+                >{{ f["minRating"].value }}/5</span
+              >
+            </div>
+            <input
+              type="range"
+              formControlName="minRating"
+              min="0"
+              max="5"
+              step="0.5"
+              class="w-full accent-yellow-500"
+            />
+          </div>
+        </div>
+
+        <!-- Prix -->
+        <div>
+          <label class="block text-base font-semibold text-gray-800 mb-2"
+            >💸 Quelle gamme de prix vous convient ?</label
+          >
+          <div class="grid grid-cols-4 gap-2">
+            <label *ngFor="let range of priceOptions" class="cursor-pointer">
+              <input
+                type="radio"
+                formControlName="priceRange"
+                [value]="range.value"
+                class="peer hidden"
+              />
+              <div
+                class="w-full text-center py-2 rounded-lg border border-gray-300 peer-checked:bg-indigo-500 peer-checked:text-white transition"
+              >
+                {{ range.label }}
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Bouton -->
+        <div class="text-center mt-6">
+          <button
+            type="submit"
+            [disabled]="loading || !preferencesForm.valid"
+            class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <span
+              *ngIf="loading"
+              class="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"
+            ></span>
+            🎉 Enregistrer mes préférences
+          </button>
+          <p
+            *ngIf="submitted && !preferencesForm.valid"
+            class="text-red-500 text-sm mt-2"
+          >
+            Veuillez remplir tous les champs obligatoires
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -37,6 +37,8 @@ import { ViewListComponent } from './components/view-list/view-list.component';
 import { ReviewComponent } from './components/review/review.component';
 import { ReportComponent } from './admin/report/report.component';
 import { SafeUrlPipe } from './pipes/safe-url.pipe';
+import { PreferencesComponent } from './components/preferences/preferences.component';
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
 
 
 
@@ -63,6 +65,8 @@ import { SafeUrlPipe } from './pipes/safe-url.pipe';
     ReviewComponent,
     ReportComponent,
     SafeUrlPipe,
+    PreferencesComponent,
+    LandingPageComponent
   ],
   imports: [
     BrowserModule,

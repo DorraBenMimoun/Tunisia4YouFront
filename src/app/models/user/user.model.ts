@@ -8,7 +8,7 @@ export interface User {
     isAdmin?: boolean;
     dateFinBannissement?: string | null; // optional
     isBanni?: boolean;  
-     signalements?: Signalement[]; // optionnel
+    signalements?: Signalement[]; // optionnel
 }
 
 export interface Signalement {

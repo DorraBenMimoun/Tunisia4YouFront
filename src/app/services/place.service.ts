@@ -159,6 +159,11 @@ export class PlaceService {
     return this.http.get<{ data: Place[], message: string, count: number }>(`${this.apiUrl}/search`, { params });
   }
   
+  getRecommandations(): Observable<Place[]> {
+    return this.http.get<{ data: Place[], message: string, count: number }>(`${this.apiUrl}/recommandations`).pipe(
+      map(response => response.data)
+    );
+  }
 
 
 
